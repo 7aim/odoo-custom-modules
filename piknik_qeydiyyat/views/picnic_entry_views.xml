@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="picnic_entry_form_view" model="ir.ui.view">
+        <field name="name">picnic.entry.form</field>
+        <field name="model">picnic.entry</field>
+        <field name="arch" type="xml">
+            <form string="Piknik Giriş Qeydi">
+                <header>
+                    <button name="action_cancel" string="Ləğv Et" type="object"
+                            invisible="state == 'cixis_etdi' or state == 'cancel'"/>
+
+                    <button name="action_cixis_etdi" string="Çıxış Etdi" type="object" class="btn-primary"
+                            invisible="state == 'cixis_etdi' or state == 'cancel'"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="daxil_oldu,cixis_etdi,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group >
+                            <field name="masin_nomresi" placeholder="99AA999" readonly="state == 'cixis_etdi' or state == 'cancel'"/>
+                            <field name="telefon_nomresi" placeholder="0551234567" readonly="state == 'cixis_etdi' or state == 'cancel'"/>
+                            <field name="zona" readonly="state == 'cixis_etdi' or state == 'cancel'"/>
+                            <field name="adam_sayi" readonly="state == 'cixis_etdi' or state == 'cancel'"/>
+                        </group>
+                        <group>
+                            <field name="giris_vaxti" readonly="1"/>
+                            <field name="cixis_vaxti" readonly="[('state', '=', 'daxil_oldu')]"/>
+                            <field name="qebul_eden_sexs" readonly="state == 'cixis_etdi' or state == 'cancel'"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Ödəniş Məlumatları">
+                            <field name="nefer_basi_odenis" readonly="state == 'cixis_etdi' or state == 'cancel'"/>
+                            <field name="umumi_odenis" readonly="1" force_save="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <notebook>
+                        <page string="Qonaqların Adları">
+                            <field name="adlar"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="picnic_entry_list_view" model="ir.ui.view">
+        <field name="name">picnic.entry.list</field>
+        <field name="model">picnic.entry</field>
+        <field name="arch" type="xml">
+            <list string="Piknik Girişləri">
+                <field name="name"/>
+                <field name="masin_nomresi"/>
+                <field name="telefon_nomresi"/>
+                <field name="zona"/>
+                <field name="giris_vaxti"/>
+                <field name="cixis_vaxti"/>
+                <field name="state"/>
+                <field name="adam_sayi"/>
+                <field name="nefer_basi_odenis"/>
+                <field name="umumi_odenis"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_picnic_entry" model="ir.actions.act_window">
+        <field name="name">Piknik Girişləri</field>
+        <field name="res_model">picnic.entry</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_picnic_root" name="Piknik İdarəetmə" sequence="10"/>
+
+    <menuitem id="menu_picnic_entries" name="Giriş Qeydiyyatı" parent="menu_picnic_root" action="action_picnic_entry"/>
+
+</odoo>
