@@ -5,7 +5,7 @@ from odoo import models, fields
 class AcceptingPerson(models.Model):
     _name = 'accepting.person'
     _description = 'Qebul eden şexs'
-    _order = 'name' # Qebul eden sexsleri adlarına görə sıralayacaq
+    _order = 'name' 
 
     name = fields.Char(string="Qebul eden şexsin adı", required=True)
     

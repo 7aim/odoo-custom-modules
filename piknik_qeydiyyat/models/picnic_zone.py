@@ -5,7 +5,7 @@ from odoo import models, fields
 class PicnicZone(models.Model):
     _name = 'picnic.zone'
     _description = 'Piknik Zonası'
-    _order = 'name' # Zonaları adlarına görə sıralayacaq
+    _order = 'name'
 
     name = fields.Char(string="Zonanın Adı", required=True)
     

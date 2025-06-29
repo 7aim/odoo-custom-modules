@@ -12,14 +12,16 @@ class PicnicEntry(models.Model):
     masin_nomresi = fields.Char(string="Maşın Nömrəsi", required=True)
     telefon_nomresi = fields.Char(string="Telefon Nömrəsi", required=True)
     adam_sayi = fields.Integer(string="Adam Sayı", default=1, required=True)
-    adlar = fields.Text(string="Adlar (hər biri yeni sətirdə)")
+    adlar = fields.Text(string="Qonaqların adları")
     
     giris_vaxti = fields.Datetime(string="Giriş Vaxtı", default=fields.Datetime.now, required=True)
     cixis_vaxti = fields.Datetime(string="Çıxış Vaxtı")
     
     zona = fields.Many2one('picnic.zone', string="Zona", required=True, ondelete='restrict')
-    
+
+    # Şirket
     company_id = fields.Many2one('res.company', string='Şirkət', default=lambda self: self.env.company)
+    # Valyuta
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', string='Valyuta')
     
     nefer_basi_odenis = fields.Monetary(string="Bir Nəfər Üçün Məbləğ", default = 5.0, currency_field='currency_id')
@@ -31,11 +33,6 @@ class PicnicEntry(models.Model):
         currency_field='currency_id'
     )
 
-    @api.depends('nefer_basi_odenis', 'adam_sayi')
-    def _compute_umumi_odenis(self):
-        for record in self:
-            record.umumi_odenis = record.nefer_basi_odenis * record.adam_sayi
-    
     qebul_eden_sexs = fields.Many2one('accepting.person', string="Qebul eden şexs", required=True, ondelete='restrict')
     
     state = fields.Selection([
@@ -44,8 +41,15 @@ class PicnicEntry(models.Model):
         ('cancel', 'Ləğv Edildi')  
     ], string='Status', default='daxil_oldu', required=True)
 
+
+    # Umumi odenisin hesablanmasi
+    @api.depends('nefer_basi_odenis', 'adam_sayi') # bu ikisinden biri deyisse avtomatik funksiyani ise sal
+    def _compute_umumi_odenis(self): # compute ile baslamasi bunun hesablama funksiyasi oldugunu gosterir
+        for record in self: # her bir qeydi ayri ayriliqda emal edir
+            record.umumi_odenis = record.nefer_basi_odenis * record.adam_sayi
+    
     # Umumi yoxlanis
-    def _perform_all_validations(self, vals):
+    def _perform_all_validations(self, vals): # vals butun deyerleri ozunde dict kimi tutur
         if 'masin_nomresi' in vals and vals['masin_nomresi']:
             pattern = re.compile(r'^\d{2}[A-Z]{2}\d{3}$')
             if not pattern.match(vals['masin_nomresi'].upper()):
@@ -62,7 +66,22 @@ class PicnicEntry(models.Model):
         
         if 'nefer_basi_odenis' in vals and vals['nefer_basi_odenis'] < 0: 
             raise ValidationError("Bir nəfər üçün ödəniş məbləği mənfi ola bilməz!")
+        
+    def action_cixis_etdi(self):
+        self.cixis_vaxti = fields.Datetime.now()
+        self.state = 'cixis_etdi'
 
+    def action_cancel(self):
+        for record in self:
+            # Yoxlayırıq ki, artıq çıxış etmiş bir qeydi ləğv etməyə çalışmasınlar
+            if record.state == 'cixis_etdi':
+                # Bu, istəyə bağlıdır, amma yaxşı praktikadır
+                raise UserError("Artıq çıxış etmiş bir qeydi ləğv etmək olmaz!")
+            
+            # Qeydin statusunu 'cancel' olaraq dəyişirik
+            record.state = 'cancel'
+        return True
+    
     @api.model
     def create(self, vals):
         # Yeni qeyd yaradılarkən yoxlamaları işə sal
@@ -79,19 +98,5 @@ class PicnicEntry(models.Model):
         # Əvvəlcə bütün yoxlamaları çağırırıq
         self._perform_all_validations(vals)
         
+        # Odoo-nun standart write funksiyasını çağır
         return super(PicnicEntry, self).write(vals)
-
-    def action_cixis_etdi(self):
-        self.cixis_vaxti = fields.Datetime.now()
-        self.state = 'cixis_etdi'
-
-    def action_cancel(self):
-        for record in self:
-            # Yoxlayırıq ki, artıq çıxış etmiş bir qeydi ləğv etməyə çalışmasınlar
-            if record.state == 'cixis_etdi':
-                # Bu, istəyə bağlıdır, amma yaxşı praktikadır
-                raise UserError("Artıq çıxış etmiş bir qeydi ləğv etmək olmaz!")
-            
-            # Qeydin statusunu 'cancel' olaraq dəyişirik
-            record.state = 'cancel'
-        return True

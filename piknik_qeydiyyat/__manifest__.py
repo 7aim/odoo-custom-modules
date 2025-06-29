@@ -4,12 +4,9 @@
     'summary': """
         Piknik ərazisinə daxil olan şəxslərin və maşınların qeydiyyatı.
     """,
-    'description': """
-        Bu modul piknik sahəsinə girişləri qeydə almaq üçün istifadə olunur.
-        Funksionallıq: Maşın nömrəsi, Adam sayı, Adlar, Giriş-çıxış vaxtı, Zona, Ödəniş, Qəbul edən şəxs.
-    """,
-    'author': "Sizin Adınız",
-    'website': "https://www.sizin-websaytiniz.com",
+
+    'author': "Asim",
+    'website': "https://github.com/7aim/odoo-custom-modules/tree/main/piknik_qeydiyyat",
     'category': 'Uncategorized',
     'version': '1.0',
     'depends': ['base'],
