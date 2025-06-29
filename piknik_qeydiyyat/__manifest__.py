@@ -9,6 +9,7 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'data/ir_sequence_data.xml', 
         'report/picnic_reports.xml',
         'report/picnic_report_templates.xml',
         'views/picnic_entry_views.xml',
