@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="picnic_guest_form_view" model="ir.ui.view">
+        <field name="name">picnic.guest.form</field>
+        <field name="model">picnic.guest</field>
+        <field name="arch" type="xml">
+            <form string="Qonağın Adı">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="entry_id" invisible="1"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="picnic_guest_list_view" model="ir.ui.view">
+        <field name="name">picnic.guest.list</field>
+        <field name="model">picnic.guest</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" create="false">
+                <field name="name" string="Qonağın Adı"/>
+            </list>
+        </field>
+    </record>
+
+</odoo>

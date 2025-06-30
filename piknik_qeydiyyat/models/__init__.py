@@ -3,3 +3,4 @@
 from . import picnic_zone
 from . import accepting_person
 from . import picnic_entry
+from . import picnic_guest

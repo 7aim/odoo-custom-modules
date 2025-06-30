@@ -12,7 +12,9 @@ class PicnicEntry(models.Model):
     masin_nomresi = fields.Char(string="Maşın Nömrəsi", required=True)
     telefon_nomresi = fields.Char(string="Telefon Nömrəsi", required=True)
     adam_sayi = fields.Integer(string="Adam Sayı", default=1, required=True)
-    adlar = fields.Text(string="Qonaqların adları")
+    #adlar = fields.Text(string="Qonaqların adları")
+    guest_ids = fields.One2many('picnic.guest', 'entry_id', string="Qonaqlarin adlari")
+    
     
     giris_vaxti = fields.Datetime(string="Giriş Vaxtı", default=fields.Datetime.now, required=True)
     cixis_vaxti = fields.Datetime(string="Çıxış Vaxtı")
@@ -48,6 +50,28 @@ class PicnicEntry(models.Model):
         for record in self: # her bir qeydi ayri ayriliqda emal edir
             record.umumi_odenis = record.nefer_basi_odenis * record.adam_sayi
     
+    @api.onchange('adam_sayi')
+    def _onchange_adam_sayi(self):
+        # Mənfi dəyərlərin qarşısını al
+        if self.adam_sayi < 0:
+            self.adam_sayi = 0
+
+        current_lines = self.guest_ids
+        target_count = self.adam_sayi
+        current_count = len(current_lines)
+
+        if target_count > current_count:
+            # Say artırılıbsa: Yeni virtual qeydlər (recordset) yarat və mövcud olanla birləşdir
+            new_records = self.env['picnic.guest']  # Boş bir recordset yaradırıq
+            for _ in range(target_count - current_count):
+                # new() metodu ilə yaddaşda virtual bir qeyd yaradıb |= operatoru ilə recordset-ə əlavə edirik
+                new_records |= self.env['picnic.guest'].new({'name': ''})
+            
+            self.guest_ids |= new_records
+
+        elif target_count < current_count:
+            self.guest_ids = current_lines[:target_count]
+            
     # Umumi yoxlanis
     def _perform_all_validations(self, vals): # vals butun deyerleri ozunde dict kimi tutur
         if 'masin_nomresi' in vals and vals['masin_nomresi']:
@@ -100,3 +124,38 @@ class PicnicEntry(models.Model):
         
         # Odoo-nun standart write funksiyasını çağır
         return super(PicnicEntry, self).write(vals)
+    
+
+    # piknik_qeydiyyat/models/picnic_entry.py
+    def action_print_receipt(self):
+        self.ensure_one()
+        # Qəbz üçün mətn formatında data hazırla
+        receipt_text = f"""
+        {self.company_id.name.center(32)}
+        --------------------------------
+        QEBZ: {self.name}
+        --------------------------------
+        Masin Nomresi: {self.masin_nomresi}
+        Giris Vaxti: {fields.Datetime.context_timestamp(self, self.giris_vaxti).strftime('%d/%m/%y %H:%M')}
+        Adam Sayi: {self.adam_sayi}
+        Umumi Mebleg: {self.umumi_odenis} AZN
+        --------------------------------
+        Qebul etdi: {self.qebul_eden_sexs.name}
+        """
+
+        # Yeni çap tapşırığı yarat (direct.print.job modelinə)
+        self.env['direct.print.job'].create({
+            'data_to_print': receipt_text,
+            'printer_name': 'Xprinter XP-Q80C'
+        })
+
+        # İstifadəçiyə bildiriş göstər
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Uğurlu',
+                'message': 'Çap tapşırığı növbəyə qoyuldu.',
+                'sticky': False,
+            }
+        }

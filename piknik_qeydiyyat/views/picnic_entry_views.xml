@@ -30,7 +30,7 @@
                         </group>
                         <group>
                             <field name="giris_vaxti" readonly="1"/>
-                            <field name="cixis_vaxti" readonly="state == 'daxil_oldu'"/>
+                            <field name="cixis_vaxti" readonly="1"/>
                             <field name="qebul_eden_sexs" readonly="state in ('cixis_etdi', 'cancel')"/>
                         </group>
                     </group>
@@ -43,8 +43,8 @@
                         <group/>
                     </group>
                     <notebook>
-                        <page string="Qonaqların Adları">
-                            <field name="adlar"/>
+                        <page string="Qonaqların Siyahısı">
+                            <field name="guest_ids" nolabel="1"/>
                         </page>
                     </notebook>
                 </sheet>
