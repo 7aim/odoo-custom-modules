@@ -1,27 +1,31 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, api
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    # Bu funksiya müştərinin ümumi borcunu hesablayır
     def _get_customer_due_amount(self):
+        """Müştərinin ümumi debitor borcunu hesablayır."""
         self.ensure_one()
-        # Yalnız 'receivable' (debitor) tipli hesablardakı borclara baxırıq
         domain = [
             ('partner_id', '=', self.id),
             ('account_id.account_type', '=', 'asset_receivable'),
             ('move_id.state', '=', 'posted'),
         ]
-        # Bütün uyğun qeydləri tapırıq
         account_move_lines = self.env['account.move.line'].search(domain)
-        # Balansı cəmləyirik
         return sum(line.balance for line in account_move_lines)
 
-    # Bu funksiya Odoo-nun standart funksiyasını genişləndirərək POS-a əlavə məlumat ötürür
-    def _get_pos_ui_pos_order_ui_data_by_partner(self):
-        # Orijinal funksiyanın nəticəsini alırıq
-        data = super()._get_pos_ui_pos_order_ui_data_by_partner()
-        # Öz məlumatımızı əlavə edirik
-        data['customer_old_due'] = self._get_customer_due_amount()
-        return data
+    def _get_pos_ui_res_partner(self, params):
+        """
+        Bu, Odoo 18 üçün DÜZGÜN funksiyadır.
+        POS-a göndərilən müştəri məlumatlarına köhnə borcu əlavə edir.
+        """
+        # Əvvəlcə Odoo-nun standart funksiyasını çağırıb müştəri məlumatlarını alırıq
+        partners = super()._get_pos_ui_res_partner(params)
+        
+        # Hər bir müştəri üçün borcu hesablayıb nəticəyə əlavə edirik
+        for partner_data in partners:
+            partner_record = self.browse(partner_data['id'])
+            partner_data['customer_old_due'] = partner_record._get_customer_due_amount()
+            
+        return partners
