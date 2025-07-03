@@ -54,51 +54,26 @@
                     <th style="text-align:right;">Qty</th>
                     <th style="text-align:right;">Amount</th>
                 </tr>
-                <t t-if="order and order.length and order and order.pos and order.pos.mainScreen and order.pos.mainScreen.props and order.pos.mainScreen.props.order and order.pos.mainScreen.props.order.orderlines and order.pos.mainScreen.props.order.orderlines.length">
-                    <t t-if="order.pos.mainScreen.props">
-                        <tr t-foreach="order.pos.mainScreen.props.order.orderlines" t-as="orderline" t-key="index_orderlines">
-                            <td style="padding-top:1%; padding-bottom:1%; text-align:left;">
-                                <t t-esc="orderline.productName"/>
-                                <t t-if="orderline.discount > 0">
-                                    <div style="font-size:12px; font-style:italic; color:#808080;">
-                                        <t t-esc="orderline.discount"/>% discount
-                                    </div>
-                                </t>
-                                <t t-if="orderline.customerNote">
-                                    <div style="font-size:14px;" t-esc="orderline.customerNote"/>
-                                </t>
-                            </td>
-                            <td style="text-align:right; font-size:14px;">
-                                <t t-esc="orderline.qty"/>
-                            </td>
-                            <td style="text-align:right; font-size:14px;">
-                                <t t-esc="orderline.price"/>
-                            </td>
-                        </tr>
-                    </t>
-                </t>
-                <t t-else="">
-                    <t t-if="orderlines and orderlines.length">
-                        <tr t-foreach="orderlines" t-as="orderline" t-key="orderline_index">
-                            <td style="padding-top:1%; padding-bottom:1%; text-align:left;">
-                                <t t-esc="orderline.productName"/>
-                                <t t-if="orderline.discount > 0">
-                                    <div style="font-size:12px; font-style:italic; color:#808080;">
-                                        <t t-esc="orderline.discount"/>% discount
-                                    </div>
-                                </t>
-                                <t t-if="orderline.customerNote">
-                                    <div style="font-size:14px;" t-esc="orderline.customerNote"/>
-                                </t>
-                            </td>
-                            <td style="text-align:right; font-size:14px;">
-                                <t t-esc="orderline.qty"/>
-                            </td>
-                            <td style="text-align:right; font-size:14px;">
-                                <t t-esc="orderline.price"/>
-                            </td>
-                        </tr>
-                    </t>
+                <t t-if="orderlines and orderlines.length">
+                    <tr t-foreach="orderlines" t-as="orderline" t-key="orderline_index">
+                        <td style="padding-top:1%; padding-bottom:1%; text-align:left;">
+                            <t t-esc="orderline.productName"/>
+                            <t t-if="orderline.discount > 0">
+                                <div style="font-size:12px; font-style:italic; color:#808080;">
+                                    <t t-esc="orderline.discount"/>% discount
+                                </div>
+                            </t>
+                            <t t-if="orderline.customerNote">
+                                <div style="font-size:14px;" t-esc="orderline.customerNote"/>
+                            </t>
+                        </td>
+                        <td style="text-align:right; font-size:14px;">
+                            <t t-esc="orderline.qty"/>
+                        </td>
+                        <td style="text-align:right; font-size:14px;">
+                            <t t-esc="orderline.price"/>
+                        </td>
+                    </tr>
                 </t>
                 </table>
             </div>
