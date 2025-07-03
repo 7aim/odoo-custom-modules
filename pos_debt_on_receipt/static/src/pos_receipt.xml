@@ -1,0 +1,5 @@
+<xpath expr="//div[hasclass('pos-receipt-contact')]" position="after">
+    <div style="text-align: center; border: 1px dashed red; margin-top: 5px; padding: 2px;">
+        <strong>MODUL İŞLƏYİR!</strong>
+    </div>
+</xpath>
