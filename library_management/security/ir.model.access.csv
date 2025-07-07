@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_library_book_all_users,library.book all users,model_library_book,,1,1,1,1
+access_library_author_all_users,library.author all users,model_library_author,,1,1,1,1
+access_library_book_category_all_users,library.book.category all users,model_library_book_category,,1,1,1,1
+access_assign_category_wizard,assign.category.wizard,model_library_assign_category_wizard,base.group_user,1,1,1,1

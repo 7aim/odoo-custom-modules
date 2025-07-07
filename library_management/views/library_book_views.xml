@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_list_library_book" model="ir.ui.view">
+        <field name="name">library.book.list</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="author_id"/>
+                <field name="state"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_form_library_book" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="make_borrowed" string="Borrow" type="object" class="btn-primary" invisible="state != 'available'"/>
+                    <button name="make_available" string="Return" type="object" class="btn-primary" invisible="state != 'borrowed'"/>
+                    <button name="make_lost" string="Mark as Lost" type="object" invisible="state not in ['available', 'borrowed']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="available,borrowed,lost"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="isbn"/>
+                            <field name="author_id"/>
+                            <field name="category_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="borrow_date"/>
+                            <field name="due_date"/> 
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Add a description for the book..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new book
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_library_root"
+        name="Library"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_library_book"
+        name="Books"
+        parent="menu_library_root"
+        action="action_library_book"
+        sequence="10"/>
+
+</odoo>
