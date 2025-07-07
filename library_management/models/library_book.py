@@ -27,7 +27,7 @@ class LibraryBook(models.Model):
         for book in self:
             if book.borrow_date:
                 # Tutaq ki, kitab 14 gün müddətinə verilir
-                book.due_date = book.borrow_date + timedelta(days=14)
+                book.due_date = book.borrow_date + timedelta(days=7)
             else:
                 book.due_date = False # Əgər icarə tarixi yoxdursa, son tarix də olmasın
 
@@ -46,7 +46,7 @@ class LibraryBook(models.Model):
     def make_borrowed(self):
         self.write({
             'state': 'borrowed',
-            'borrow_date': fields.Date.today() # Bug-n-n tarixini yazır
+            'borrow_date': fields.Date.today() # Bugunun tarixini yazır
         })
 
     def make_available(self):

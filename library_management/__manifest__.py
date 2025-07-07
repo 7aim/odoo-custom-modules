@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Kitabxana İdarəetmə Sistemi",
     'version': '18.0.1.0.0',
     'summary': "Odoo 18 üçün sadə kitabxana idarəetmə modulu.",
     'author': "Aim",  
-    'website': "https://github.com/7aim", # 
+    'website': "https://github.com/7aim",
     'category': 'Services/Library',
     'license': 'LGPL-3',
 
