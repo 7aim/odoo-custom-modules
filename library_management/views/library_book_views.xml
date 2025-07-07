@@ -6,6 +6,7 @@
         <field name="model">library.book</field>
         <field name="arch" type="xml">
             <list>
+                <field name="reference"/>
                 <field name="name"/>
                 <field name="author_id"/>
                 <field name="state"/>
@@ -33,20 +34,20 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="isbn"/>
-                            <field name="author_id"/>
-                            <field name="category_ids" widget="many2many_tags"/>
+                            <field name="name" readonly="state != 'available'"/>
+                            <field name="isbn" readonly="state != 'available'"/>
+                            <field name="author_id" readonly="state != 'available'"/>
+                            <field name="category_ids" widget="many2many_tags" readonly="state != 'available'"/>
                         </group>
                         <group>
-                            <field name="active"/>
-                            <field name="borrow_date"/>
+                            <field name="active" readonly="state != 'available'"/>
+                            <field name="borrow_date" />
                             <field name="due_date"/> 
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
-                            <field name="description" placeholder="Add a description for the book..."/>
+                            <field name="description" placeholder="Add a description for the book..." readonly="state != 'available'"/>
                         </page>
                     </notebook>
                 </sheet>
