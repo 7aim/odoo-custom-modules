@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_picnic_entry,picnic.entry.all,model_picnic_entry,base.group_user,1,1,1,1
-access_picnic_zone,picnic.zone.all,model_picnic_zone,base.group_user,1,1,1,1
-access_accepting_person,accepting.person.all,model_accepting_person,base.group_user,1,1,1,1
-access_picnic_guest,picnic.guest.all,model_picnic_guest,base.group_user,1,1,1,1
