@@ -9,6 +9,11 @@
                     <group>
                         <field name="name"/>
                     </group>
+                    <notebook>
+                        <page string="Books">
+                            <field name="category_book_ids"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
