@@ -34,6 +34,7 @@
             </field>
         </record>
 
+        <!-- Printer test menyusunda hec bir form olmaddiqda gosterilen komekci html -->
         <record id="qz_model_action" model="ir.actions.act_window">
             <field name="name">QZ Printer Test</field>
             <field name="res_model">qz.model</field>

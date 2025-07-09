@@ -27,13 +27,6 @@
                     </button>
                 </div>
                 
-                <!-- Test Mode Info -->
-                <div class="alert alert-warning mt-3">
-                    <strong>⚠️ QZ Tray Tələbləri:</strong><br/>
-                    • QZ Tray programı yüklü olmalıdır<br/>
-                    • Printer kompyuterə qoşulu olmalıdır<br/>
-                    • QZ Tray proqramı işə salınmalıdır
-                </div>
             </div>
 
             <!-- Printing Mode -->
