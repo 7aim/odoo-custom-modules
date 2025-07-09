@@ -1,5 +1,3 @@
-/** @odoo-module */
-
 import { registry } from "@web/core/registry";
 import { loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
@@ -97,103 +95,7 @@ Tesekkur edirik!`;
     }
 
     async onBrowserPrintClick() {
-        /**
-         * Browser-də yeni tab açıb çap et
-         */
-        console.log('Browser print düyməsi basıldı');
-        try {
-            if (this.printJobId) {
-                console.log('Print job mövcuddur:', this.printJobId);
-                window.open(`/print/job/${this.printJobId}`, '_blank');
-            } else {
-                console.log('Print job yoxdur, yaradılacaq');
-                // Print job yoxdursa, yaradırıq
-                this.notification.add('Print job yaradılır...', { type: 'info' });
-                try {
-                    await this.createPrintJob();
-                    if (this.printJobId) {
-                        console.log('Yeni print job yaradıldı:', this.printJobId);
-                        window.open(`/print/job/${this.printJobId}`, '_blank');
-                    } else {
-                        throw new Error('Print job yaradıla bilmədi');
-                    }
-                } catch (rpcError) {
-                    // RPC işləməsə, sadə HTML print açaq
-                    console.error('RPC xətası, sadə HTML print açılır:', rpcError);
-                    this.openSimpleHTMLPrint();
-                }
-            }
-        } catch (error) {
-            console.error('Browser print xətası:', error);
-            this.notification.add(`Browser print xətası: ${error.message}`, { 
-                type: 'danger',
-                title: 'Xəta'
-            });
-            // Son çarə - sadə HTML print
-            this.openSimpleHTMLPrint();
-        }
-    }
-
-    openSimpleHTMLPrint() {
-        /**
-         * Sadə HTML print - database işləməsə belə
-         */
-        const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <title>QZ Print</title>
-            <style>
-                body { 
-                    font-family: 'Courier New', monospace; 
-                    font-size: 12px; 
-                    margin: 20px;
-                    background: white;
-                }
-                .receipt { 
-                    max-width: 300px; 
-                    margin: 0 auto; 
-                    padding: 20px;
-                    border: 1px solid #ddd;
-                    background: white;
-                }
-                .no-print { 
-                    margin: 20px 0;
-                    text-align: center;
-                }
-                .print-btn {
-                    background: #007bff;
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    margin: 0 10px;
-                }
-                @media print {
-                    .no-print { display: none; }
-                    body { margin: 0; }
-                    .receipt { border: none; max-width: none; }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="no-print">
-                <button class="print-btn" onclick="window.print()">🖨️ Çap Et</button>
-                <button class="print-btn" onclick="window.close()">❌ Bağla</button>
-            </div>
-            
-            <div class="receipt">
-                <pre>${this.state.receiptText}</pre>
-            </div>
-        </body>
-        </html>
-        `;
-        
-        const printWindow = window.open('', '_blank');
-        printWindow.document.write(htmlContent);
-        printWindow.document.close();
+        window.print()
     }
 
     onCancelClick() {
