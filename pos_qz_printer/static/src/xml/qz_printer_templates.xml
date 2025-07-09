@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="pos_qz_printer.QZPrintAction" owl="1">
+        <div/>
+    </t>
+
+</templates>

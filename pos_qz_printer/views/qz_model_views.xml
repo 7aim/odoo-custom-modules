@@ -1,31 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_qz_form" model="ir.ui.view">
-        <field name="name">qz.print.test.form</field>
-        <field name="model">qz.print.test</field>
-        <field name="arch" type="xml">
-            <form string="QZ Yazıcı Testi">
-                <header>
-                    <button name="action_print_receipt"
-                            string="Fişi Yazdır"
-                            type="object"
-                            class="btn-primary"/>
-                </header>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="total"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+    <data>
+        <record id="qz_model_view_form" model="ir.ui.view">
+            <field name="name">qz.model.form</field>
+            <field name="model">qz.model</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_print_receipt" string="Print Receipt" type="object" class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Məhsul adı..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="total"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <record id="action_qz_test" model="ir.actions.act_window">
-        <field name="name">QZ Yazıcı Test</field>
-        <field name="res_model">qz.print.test</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <record id="qz_model_view_list" model="ir.ui.view">
+            <field name="name">qz.model.list</field>
+            <field name="model">qz.model</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="total"/>
+                </list>
+            </field>
+        </record>
 
-    <menuitem id="menu_qz_root" name="QZ Yazdırma" sequence="10"/>
-    <menuitem id="menu_qz_test" name="Fiş Testi" parent="menu_qz_root" action="action_qz_test"/>
+        <record id="qz_model_action" model="ir.actions.act_window">
+            <field name="name">QZ Printer Test</field>
+            <field name="res_model">qz.model</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem id="qz_printer_main_menu" name="QZ Printer" sequence="10"/>
+        <menuitem id="qz_model_menu" name="Printer Test" parent="qz_printer_main_menu" action="qz_model_action" sequence="10"/>
+    </data>
 </odoo>

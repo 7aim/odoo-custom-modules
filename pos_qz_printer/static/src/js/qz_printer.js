@@ -1,123 +1,105 @@
-odoo.define('pos_qz_printer.action', function (require) {
-"use strict";
+/** @odoo-module */
 
-const AbstractAction = require('web.AbstractAction');
-const core = require('web.core');
-const { loadJS } = require('@web/core/assets');
-const { useService } = require("@web/core/utils/hooks");
-const { onWillStart } = require("@odoo/owl");
+import { registry } from "@web/core/registry";
+import { loadJS } from "@web/core/assets";
+import { useService } from "@web/core/utils/hooks";
+import { Component, onWillStart } from "@odoo/owl";
+import { BlockUI } from "@web/core/ui/block_ui";
+import { session } from "@web/session";
 
-const QZPrintAction = AbstractAction.extend({
-    // Bu, Odoo-nun bildiriş sistemini istifadə etmək üçün lazımdır
-    hasControlPanel: false,
+class QZPrintAction extends Component {
+    setup() {
+        super.setup();
+        this.notification = useService("notification");
+        this.action = useService("action");
+        this.rpc = useService("rpc");
 
-    /**
-     * Odoo 16-da xarici kitabxanaları yükləmək üçün ən yaxşı üsul
-     * `willStart` lifecycle metodunu istifadə etməkdir.
-     */
-    willStart: function () {
-        // QZ Tray JS kitabxanasını birbaşa CDN-dən yükləyirik.
-        // Bu, kitabxananı manual olaraq qovluğa atmaqdan daha asandır.
-        return Promise.all([
-            this._super.apply(this, arguments),
-            loadJS('https://cdn.jsdelivr.net/npm/qz-tray@2.2.0/qz-tray.js')
-        ]);
-    },
+        onWillStart(async () => {
+            // QZ Tray JS kitabxanasını birbaşa CDN-dən yükləyirik.
+            await loadJS('https://cdn.jsdelivr.net/npm/qz-tray@2.2.0/qz-tray.js');
+        });
+    }
 
     /**
-     * Action işə düşdükdə bu funksiya çağırılır.
+     * Komponent DOM-a əlavə edildikdən sonra bu funksiya işə düşür.
      */
-    start: function () {
-        this._super.apply(this, arguments);
+    async mounted() {
         // Python-dan göndərilən parametrləri alırıq
-        const params = this.options && this.options.params || {};
+        const params = this.props.action.params || {};
         const name = params.name || 'N/A';
         const total = params.total || 0.0;
 
         const receiptText = `
-    === QZ YAZICI TEST ===
+=== QZ YAZICI TEST ===
 Ad: ${name}
-Tutar: ${total} AZN
+Tutar: ${total} ${session.currency_symbol || ''}
 -------------------------
-Teşekkür ederiz!\n\n`;
+Tesekkur edirik!\n\n`;
 
         // QZ Tray-ə qoşulub çap etmə funksiyasını çağırırıq
-        this._connectAndPrint(receiptText);
-
-        // Bu action öz işini arxa planda gördüyü üçün
-        // dərhal pəncərəni bağlaya bilərik.
-        return this.do_action({ type: 'ir.actions.act_window_close' });
-    },
+        BlockUI();
+        try {
+            await this._connectAndPrint(receiptText);
+        } finally {
+            // Pəncərəni bağlayırıq və bloku aradan qaldırırıq
+            this.props.onClose();
+        }
+    }
 
     /**
      * QZ Tray-ə qoşulur və məlumatı çap edir.
      * @param {string} dataToPrint Çap ediləcək mətn
      * @private
      */
-    _connectAndPrint: function (dataToPrint) {
-        // QZ Tray kitabxanasının yüklənib-yüklənmədiyini yoxlayırıq
-        if (typeof qz === 'undefined') {
-            this.displayNotification({
-                type: 'danger',
-                title: 'Xəta',
-                message: 'QZ Tray JavaScript kitabxanası yüklənmədi.'
-            });
-            return;
-        }
+    async _connectAndPrint(dataToPrint) {
+        try {
+            if (typeof qz === 'undefined') {
+                throw new Error('QZ Tray JavaScript kitabxanası yüklənmədi.');
+            }
 
-        // QZ Tray ilə təhlükəsiz bağlantı üçün bu addım vacibdir.
-        // Production mühitində server tərəfində imzalama prosesi olmalıdır.
-        // https://qz.io/wiki/signing-messages
-        qz.security.setSignaturePromise((toSign) => {
-            // İndi üçün bu hissəni boş saxlayırıq, ancaq production üçün vacibdir.
-            return (resolve, reject) => {
-                // Burada serverə müraciət edib imza almalısınız.
+            qz.security.setSignaturePromise((toSign) => {
+                // Production mühitində server tərəfində imzalama prosesi olmalıdır.
                 // Test üçün birbaşa resolve edirik.
-                resolve();
-            };
-        });
+                return (resolve, reject) => resolve();
+            });
 
-        qz.websocket.connect().then(() => {
-            console.log("QZ Tray-ə uğurla qoşuldu!");
-            // Varsayılan (default) printeri tapırıq
-            return qz.printers.getDefault();
-        }).then((printer) => {
+            if (!qz.websocket.isActive()) {
+                await qz.websocket.connect();
+            }
+            
+            const printer = await qz.printers.getDefault();
+            
             if (!printer) {
                 throw new Error("Sistemdə varsayılan (default) printer tapılmadı.");
             }
-            console.log("Default printer:", printer);
+
             const config = qz.configs.create(printer);
             const data = [{
                 type: 'raw',
                 format: 'plain',
                 data: dataToPrint,
-                options: { language: "epl", encoding: 'UTF-8' } // Printer dilini və kodlaşdırmanı təyin edin
+                options: { language: "epl", encoding: 'UTF-8' }
             }];
-            return qz.print(config, data);
-        }).then(() => {
-            console.log("Çap əməliyyatı uğurla göndərildi.");
-            this.displayNotification({
-                type: 'success',
-                title: 'Uğurlu',
-                message: 'Məlumat printerə göndərildi.'
-            });
-            // Qoşulunu kəsirik
-            return qz.websocket.disconnect();
-        }).catch(err => {
+
+            await qz.print(config, data);
+            this.notification.add('Məlumat printerə göndərildi.', { type: 'success' });
+
+        } catch (err) {
             console.error("QZ Tray xətası:", err);
-            // `alert()` yerinə Odoo-nun öz bildiriş sistemini istifadə edirik.
-            this.displayNotification({
+            this.notification.add(`Printerə qoşularkən xəta baş verdi: ${err.message || err}`, {
                 type: 'danger',
-                title: 'QZ Tray Xətası',
-                message: `Printerə qoşularkən xəta baş verdi: ${err.message || err}`
+                title: 'QZ Tray Xətası'
             });
-        });
-    },
-});
+        } finally {
+            if (qz && qz.websocket.isActive()) {
+                await qz.websocket.disconnect();
+            }
+        }
+    }
+}
+
+// Komponent üçün şablon
+QZPrintAction.template = "pos_qz_printer.QZPrintAction";
 
 // Action-ı düzgün adla qeydiyyatdan keçiririk.
-core.action_registry.add('print_qz_receipt', QZPrintAction);
-
-return QZPrintAction;
-
-});
+registry.category("actions").add("print_qz_receipt", QZPrintAction);
