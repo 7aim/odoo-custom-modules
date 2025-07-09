@@ -9,7 +9,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'custom_qz_printer/static/src/js/qz_print.js',
+            'pos_qz_printer/static/src/js/qz_printer.js',
         ],
     },
     'installable': True,
