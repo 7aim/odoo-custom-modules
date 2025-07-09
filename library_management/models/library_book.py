@@ -54,9 +54,6 @@ class LibraryBook(models.Model):
             'borrow_date': False 
         })
 
-    def make_lost(self):
-        self.write({'state': 'lost'})
-
     # Eyni anda bir nece qeydi yarada biler
     @api.model_create_multi
     def create(self, vals_list):

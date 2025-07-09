@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_list_company_expense_report" model="ir.ui.view">
+        <field name="name">company.expense.report.list</field>
+        <field name="model">company.expense.report</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="total_amount"/>
+                <field name="currency_id" column_invisible="1"/> <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_form_company_expense_report" model="ir.ui.view">
+        <field name="name">company.expense.report.form</field>
+        <field name="model">company.expense.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" string="Təsdiqə Göndər" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Təsdiqlə" type="object" class="oe_highlight" invisible="state != 'submitted'"/>
+                    <button name="action_pay" string="Ödəniş et" type="object" class="oe_highlight" invisible="state != 'approved'"/>
+                    <button name="action_reject" string="Rədd et" type="object" invisible="state not in ['submitted', 'approved']"/>
+                    <button name="action_draft" string="Qaralamaya Qaytar" type="object" invisible="state in ['draft', 'paid']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Məs: Mart Ayı Ezamiyyət Xərcləri"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="total_amount"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Xərc Sətirləri">
+                            <field name="expense_line_ids">
+                                <list editable="bottom">
+                                    <field name="date"/>
+                                    <field name="description"/>
+                                    <field name="amount"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_company_expense_report" model="ir.actions.act_window">
+        <field name="name">Xərc Hesabatları</field>
+        <field name="res_model">company.expense.report</field>
+        <field name="view_mode">list,form</field> <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Yeni bir xərc hesabatı yarat!
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_expense_root"
+        name="Xərclər"
+        sequence="15"/>
+
+    <menuitem
+        id="menu_expense_reports"
+        name="Xərc Hesabatlarım"
+        parent="menu_expense_root"
+        action="action_company_expense_report"
+        sequence="10"/>
+
+</odoo>
