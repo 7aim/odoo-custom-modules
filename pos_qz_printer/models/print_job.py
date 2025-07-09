@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
 class PrintJob(models.Model):
@@ -6,6 +5,7 @@ class PrintJob(models.Model):
     _description = 'Print Job'
     _order = 'create_date desc'
 
+    # Basliq, Mezmun ve tip
     name = fields.Char(string='Job Name', required=True)
     content = fields.Text(string='Print Content', required=True)
     content_type = fields.Selection([
@@ -15,13 +15,17 @@ class PrintJob(models.Model):
         ('label', 'Label'),
         ('other', 'Other'),
     ], string='Content Type', default='receipt')
+
+    # Status
     status = fields.Selection([
         ('pending', 'Pending'),
         ('printed', 'Printed'),
     ], string='Status', default='pending')
-    
+
+    # Istifadeci
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user)
 
+    # "Browserde cap et" butonu
     def action_print_browser(self):
         """Browser-də çap etmək üçün URL aç"""
         return {
@@ -30,6 +34,7 @@ class PrintJob(models.Model):
             'target': 'new',
         }
     
+    # "Cap edilmis" butonu
     def action_mark_printed(self):
         """Print job-u çap edilmiş olaraq işarələ"""
         self.write({'status': 'printed'})

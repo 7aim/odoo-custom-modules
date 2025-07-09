@@ -1,11 +1,9 @@
-# pos_qz_printer/__manifest__.py
-
 {
     'name': 'POS QZ Printer',
     'version': '1.0',
     'category': 'Point of Sale',
     'summary': 'Integrate QZ Tray printer with Odoo POS',
-    'author': 'Sizin Adınız',
+    'author': 'Aim',
     'depends': ['web', 'point_of_sale'],
     'data': [
         'security/ir.model.access.csv',
@@ -20,5 +18,4 @@
     },
     'installable': True,
     'application': True,
-    'auto_install': False,
 }

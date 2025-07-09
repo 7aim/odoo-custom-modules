@@ -56,6 +56,7 @@ class PrintJobController(http.Controller):
             </style>
         </head>
         <body>
+
             <!-- Çap düymələri -->
             <div class="no-print">
                 <button class="print-btn" onclick="window.print()">
@@ -80,6 +81,7 @@ class PrintJobController(http.Controller):
                     }});
                 }});
             </script>
+            
         </body>
         </html>
         '''

@@ -47,14 +47,6 @@
                         <page string="Məzmun">
                             <field name="content" widget="text"/>
                         </page>
-                        <page string="Önizləmə">
-                            <div class="text-center">
-                                <h4>Çap Önizləməsi</h4>
-                                <div style="border: 1px solid #ddd; padding: 20px; background: #f9f9f9; max-width: 600px; margin: 0 auto; font-family: monospace; white-space: pre-line;">
-                                    <field name="content" readonly="1"/>
-                                </div>
-                            </div>
-                        </page>
                     </notebook>
                 </sheet>
             </form>
