@@ -8,18 +8,17 @@
     'author': 'Sizin Adınız',
     'depends': ['web', 'point_of_sale'],
     'data': [
-        # 'security/ir.model.access.csv', # Ehtiyac varsa, bu sətri aktiv saxlayın
         'security/ir.model.access.csv',
         'views/qz_model_views.xml',
+        'views/print_job_views.xml',
     ],
     'assets': {
         'web.assets_backend': [
             'pos_qz_printer/static/src/js/qz_printer.js',
-        ],
-        'web.assets_qweb': [
             'pos_qz_printer/static/src/xml/qz_printer_templates.xml',
         ],
     },
     'installable': True,
     'application': True,
+    'auto_install': False,
 }

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from odoo import models, fields, api
 
 class QzModel(models.Model):
@@ -10,20 +9,12 @@ class QzModel(models.Model):
     total = fields.Float(string='Total', default=15.75)
 
     def action_print_receipt(self):
-        """
-        This method prepares the data and returns a client action
-        to trigger the QZ Tray printing.
-        """
-        self.ensure_one()
-
-        # JavaScript-ə göndəriləcək parametrlər
-        params = {
-            'name': self.name,
-            'total': self.total,
-        }
-
+        """QZ Tray ilə çap etmə funksiyası"""
         return {
             'type': 'ir.actions.client',
-            'tag': 'print_qz_receipt', # Bu ad JS faylındakı ad ilə eyni olmalıdır
-            'params': params,
+            'tag': 'print_qz_receipt',
+            'params': {
+                'name': self.name,
+                'total': self.total,
+            }
         }

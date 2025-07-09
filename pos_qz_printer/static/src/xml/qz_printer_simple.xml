@@ -3,81 +3,74 @@
 
     <t t-name="pos_qz_printer.QZPrintAction">
         <div class="qz-print-action p-4" style="min-width: 500px;">
-            <!-- Preview Mode -->
+            
+            <!-- Önizləmə Rejimi -->
             <div t-if="state.mode === 'preview'" class="text-center">
                 <h4 class="mb-4">
                     <i class="fa fa-print me-2"></i>
                     Çap Önizləmə
                 </h4>
                 
-                <!-- Receipt Preview -->
+                <!-- Receipt göstər -->
                 <div class="receipt-preview p-3 mb-4" style="background: #f8f9fa; border: 1px solid #dee2e6; font-family: monospace; white-space: pre-line; text-align: left; max-width: 300px; margin: 0 auto;">
                     <t t-esc="state.receiptText"/>
                 </div>
                 
-                <!-- Buttons -->
+                <!-- Düymələr -->
                 <div class="d-flex justify-content-center gap-2 flex-wrap">
                     <button class="btn btn-primary" t-on-click="onPrintClick">
                         <i class="fa fa-print me-1"></i>
-                        QZ Tray ilə Çap Et
+                        QZ Printer
                     </button>
                     <button class="btn btn-info" t-on-click="onBrowserPrintClick">
                         <i class="fa fa-globe me-1"></i>
-                        Browser-də Çap Et
+                        Browser
                     </button>
                     <button class="btn btn-secondary" t-on-click="onCancelClick">
                         <i class="fa fa-times me-1"></i>
-                        Ləğv Et
+                        Bağla
                     </button>
                 </div>
                 
-                <!-- Test Mode Info -->
+                <!-- Məlumat -->
                 <div class="alert alert-info mt-3" style="font-size: 0.9em;">
                     <i class="fa fa-info-circle me-1"></i>
-                    <strong>Test Rejimi:</strong> Printer olmadan da test edə bilərsiniz. 
-                    "Çap Et" düyməsini basıb nəticəni görə bilərsiniz.
+                    <strong>Test:</strong> Printer olmadan da test edə bilərsiniz. Browser düyməsini istifadə edin.
                 </div>
             </div>
 
-            <!-- Printing Mode -->
+            <!-- Çap Edilir -->
             <div t-if="state.mode === 'printing'" class="text-center">
-                <div class="spinner-border text-primary mb-3" role="status"></div>
+                <div class="spinner-border text-primary mb-3"></div>
                 <h5>Çap edilir...</h5>
-                <p class="text-muted">QZ Tray-ə qoşulur və printer-ə göndərilir...</p>
+                <p class="text-muted">QZ Tray-ə qoşulur...</p>
             </div>
 
-            <!-- Success Mode -->
+            <!-- Uğurlu -->
             <div t-if="state.mode === 'success'" class="text-center">
                 <div class="text-success mb-3">
                     <i class="fa fa-check-circle fa-3x"></i>
                 </div>
-                <h5 class="text-success">Müvəffəqiyyətlə Çap Edildi!</h5>
-                <p class="text-muted">Sənəd printer-ə göndərildi.</p>
-                <div class="d-flex justify-content-center gap-2">
-                    <button class="btn btn-success" t-on-click="onCancelClick">
-                        <i class="fa fa-check me-1"></i>
-                        Tamam
-                    </button>
-                    <button class="btn btn-info" t-on-click="onBrowserPrintClick" t-if="printJobId">
-                        <i class="fa fa-globe me-1"></i>
-                        Browser-də Göstər
-                    </button>
-                </div>
+                <h5 class="text-success">Çap Edildi!</h5>
+                <button class="btn btn-success" t-on-click="onCancelClick">
+                    <i class="fa fa-check me-1"></i>
+                    Tamam
+                </button>
             </div>
 
-            <!-- Error Mode -->
+            <!-- Xəta -->
             <div t-if="state.mode === 'error'" class="text-center">
                 <div class="text-danger mb-3">
                     <i class="fa fa-exclamation-triangle fa-3x"></i>
                 </div>
-                <h5 class="text-danger">Çap Xətası!</h5>
+                <h5 class="text-danger">Xəta!</h5>
                 <div class="alert alert-danger">
                     <t t-esc="state.errorMessage"/>
                 </div>
                 <div class="d-flex justify-content-center gap-3">
                     <button class="btn btn-primary" t-on-click="() => this.state.mode = 'preview'">
                         <i class="fa fa-arrow-left me-1"></i>
-                        Geri Qayıt
+                        Geri
                     </button>
                     <button class="btn btn-secondary" t-on-click="onCancelClick">
                         <i class="fa fa-times me-1"></i>
