@@ -21,10 +21,6 @@
                         <i class="fa fa-print me-1"></i>
                         QZ Tray ilə Çap Et
                     </button>
-                    <button class="btn btn-info" t-on-click="onBrowserPrintClick">
-                        <i class="fa fa-globe me-1"></i>
-                        Browser-də Çap Et
-                    </button>
                     <button class="btn btn-secondary" t-on-click="onCancelClick">
                         <i class="fa fa-times me-1"></i>
                         Ləğv Et
@@ -32,10 +28,11 @@
                 </div>
                 
                 <!-- Test Mode Info -->
-                <div class="alert alert-info mt-3" style="font-size: 0.9em;">
-                    <i class="fa fa-info-circle me-1"></i>
-                    <strong>Test Rejimi:</strong> Printer olmadan da test edə bilərsiniz. 
-                    "Çap Et" düyməsini basıb nəticəni görə bilərsiniz.
+                <div class="alert alert-warning mt-3">
+                    <strong>⚠️ QZ Tray Tələbləri:</strong><br/>
+                    • QZ Tray programı yüklü olmalıdır<br/>
+                    • Printer kompyuterə qoşulu olmalıdır<br/>
+                    • QZ Tray proqramı işə salınmalıdır
                 </div>
             </div>
 
@@ -57,10 +54,6 @@
                     <button class="btn btn-success" t-on-click="onCancelClick">
                         <i class="fa fa-check me-1"></i>
                         Tamam
-                    </button>
-                    <button class="btn btn-info" t-on-click="onBrowserPrintClick" t-if="printJobId">
-                        <i class="fa fa-globe me-1"></i>
-                        Browser-də Göstər
                     </button>
                 </div>
             </div>

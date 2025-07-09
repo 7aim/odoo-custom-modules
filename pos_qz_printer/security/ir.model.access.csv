@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_qz_model_user,qz.model.user,model_qz_model,base.group_user,1,1,1,1
-access_print_job_user,pos.print.job.user,model_pos_print_job,base.group_user,1,1,1,1

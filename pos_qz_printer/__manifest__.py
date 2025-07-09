@@ -8,7 +8,6 @@
     'data': [
         'security/ir.model.access.csv',
         'views/qz_model_views.xml',
-        'views/print_job_views.xml',
     ],
     'assets': {
         'web.assets_backend': [

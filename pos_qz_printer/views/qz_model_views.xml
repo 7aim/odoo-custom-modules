@@ -38,6 +38,18 @@
             <field name="name">QZ Printer Test</field>
             <field name="res_model">qz.model</field>
             <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    QZ Tray Printer Test!
+                </p>
+                <p>
+                    <strong>Tələblər:</strong><br/>
+                    • QZ Tray yükləyin: <a href="https://qz.io/download/" target="_blank">qz.io/download</a><br/>
+                    • Printer kompyuterə qoşun<br/>
+                    • QZ Tray proqramını işə salın<br/>
+                    • Record yaradıb "Print Receipt" basın
+                </p>
+            </field>
         </record>
 
         <menuitem id="qz_printer_main_menu" name="QZ Printer" sequence="10"/>
