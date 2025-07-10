@@ -6,9 +6,7 @@
             <field name="model">qz.model</field>
             <field name="arch" type="xml">
                 <form>
-                    <header>
-                        <button name="action_print_receipt" string="Print Receipt" type="object" class="btn-primary"/>
-                    </header>
+                    <header/>
                     <sheet>
                         <div class="oe_title">
                             <h1>
@@ -18,6 +16,8 @@
                         <group>
                             <field name="total"/>
                         </group>
+
+                        <field name="name" widget="qz_form_printer" nolabel="1"/>
                     </sheet>
                 </form>
             </field>

@@ -11,8 +11,8 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'pos_qz_printer/static/src/js/qz_printer.js',
-            'pos_qz_printer/static/src/xml/qz_printer_templates.xml',
+            'pos_qz_printer/static/src/js/qz_form_widget.js',
+            'pos_qz_printer/static/src/xml/qz_form_widget_templates.xml',
         ],
     },
     'installable': True,
