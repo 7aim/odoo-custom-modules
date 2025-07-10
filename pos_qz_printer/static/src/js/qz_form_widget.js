@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { registry } from "@web/core/registry";
 import { loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
@@ -46,12 +44,12 @@ Tesekkur edirik!`;
             // Xəta bildirişi _connectAndPrint içində göstərilir
         } finally {
             this.state.isPrinting = false;
+            window.history.back();
         }
     }
 
-    /**
-     * Sənin detallı yoxlamaları olan QZ Tray çap funksiyası
-     */
+ 
+     //  QZ Tray çap funksiyası ( yoxlamalarla birlikde )
     async _connectAndPrint(dataToPrint) {
         try {
             // 1. QZ Tray yüklənib-yüklənmədiyini yoxla

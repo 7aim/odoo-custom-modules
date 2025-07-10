@@ -10,7 +10,7 @@
             <button class="btn btn-primary" t-on-click="onPrintClick" t-att-disabled="state.isPrinting">
                 <i t-if="!state.isPrinting" class="fa fa-print me-1"/>
                 <i t-if="state.isPrinting" class="fa fa-spinner fa-spin me-1"/>
-                <t t-if="!state.isPrinting">Pramoy Çap Et</t>
+                <t t-if="!state.isPrinting">Çap Et</t>
                 <t t-if="state.isPrinting">Çap edilir...</t>
             </button>
 
