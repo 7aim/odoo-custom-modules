@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="pos_qz_printer.QZFormWidget" owl="1">
+        <div class="qz-form-widget">
+            <h5 class="mt-2">Çek Önizləməsi</h5>
+            <div class="receipt-preview p-3 mb-2" style="background: #f8f9fa; border: 1px solid #dee2e6; font-family: monospace; white-space: pre-wrap; max-width: 400px; font-size: 12px;">
+                <t t-esc="receiptText"/>
+            </div>
+
+            <button class="btn btn-primary" t-on-click="onPrintClick" t-att-disabled="state.isPrinting">
+                <i t-if="!state.isPrinting" class="fa fa-print me-1"/>
+                <i t-if="state.isPrinting" class="fa fa-spinner fa-spin me-1"/>
+                <t t-if="!state.isPrinting">Çap Et</t>
+                <t t-if="state.isPrinting">Çap edilir...</t>
+            </button>
+
+            <div t-if="state.errorMessage" class="alert alert-danger mt-2" role="alert">
+                <t t-esc="state.errorMessage"/>
+            </div>
+        </div>
+    </t>
+</templates>
