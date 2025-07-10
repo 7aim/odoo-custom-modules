@@ -47,11 +47,14 @@ Tesekkur edirik!`;
     }
 
     onCancelClick() {
+        window.history.back();
+        /*
         if (this.props.close) {
             this.props.close();
         } else {
             this.action.doAction({ type: 'ir.actions.act_window_close' });
         }
+        */
     }
 
     /**
