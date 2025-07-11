@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_company_expense_report_user,company.expense.report user,model_company_expense_report,base.group_user,1,1,1,1
-access_company_expense_line_user,company.expense.line user,model_company_expense_line,base.group_user,1,1,1,1
