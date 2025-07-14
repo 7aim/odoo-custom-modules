@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_form_support_ticket" model="ir.ui.view">
+        <field name="name">support.ticket.form</field>
+        <field name="model">support.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,solved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Problemin mövzusunu daxil edin..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="priority"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Açıqlama">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_list_support_ticket" model="ir.ui.view">
+        <field name="name">support.ticket.list</field>
+        <field name="model">support.ticket</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="priority"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    
+    <record id="action_support_ticket" model="ir.actions.act_window">
+        <field name="name">Dəstək Ticketləri</field>
+        <field name="res_model">support.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Hələ heç bir ticket yaradılmayıb.
+            </p>
+            <p>
+                İlk dəstək ticketini yaratmaq üçün "Yarat" düyməsinə basın.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_support_root"
+        name="Dəstək"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_support_ticket"
+        name="Ticketlər"
+        parent="menu_support_root"
+        action="action_support_ticket"
+        sequence="10"/>
+</odoo>
