@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="support_ticket_form_template" name="Dəstək Forması">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container">
+                    <h1 class="mt-4">Dəstək Mərkəzi</h1>
+                    <p>Problem və ya təkliflərinizi bizə bildirin.</p>
+                    <form action="/support/submit" method="POST" class="mt-4">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="form-group">
+                            <label for="your_name">Adınız</label>
+                            <input type="text" class="form-control" name="your_name" required="1"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email ünvanınız</label>
+                            <input type="email" class="form-control" name="email" required="1"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Problemin açıqlaması</label>
+                            <textarea class="form-control" name="description" rows="5" required="1"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Göndər</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="support_ticket_thank_you_template" name="Təşəkkürlər">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container text-center mt-5">
+                    <h1 class="mb-3">Təşəkkür edirik!</h1>
+                    <p>Müraciətiniz qəbul olundu. Ən qısa zamanda sizinlə əlaqə saxlanılacaq.</p>
+                    <a href="/" class="btn btn-primary mt-3">Ana Səhifəyə Qayıt</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -7,16 +7,16 @@
     'category': 'Services/Helpdesk',
     'license': 'LGPL-3',
 
-    # Modulun işləməsi üçün tələb olunan digər modullar
-    'depends': ['base', 'mail'],  # 'website'-i çıxarın əgər lazım deyilsə
+    'depends': ['base', 'mail', 'website'], 
 
-    # Modul yüklənəndə Odoo tərəfindən oxunacaq faylların siyahısı
     'data': [
         'security/ir.model.access.csv',
+        'data/support_ticket_data.xml',
         'views/support_ticket_views.xml',
+        'views/support_ticket_templates.xml',
     ],
 
     'application': True,
     'installable': True,
-    'auto_install': False,  # Əlavə edin
+    'auto_install': False,
 }

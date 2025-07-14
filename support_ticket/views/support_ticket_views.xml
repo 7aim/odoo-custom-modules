@@ -6,12 +6,17 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_start_work" string="İşə Başla" type="object" class="btn-primary" invisible="state != 'new'"/>
+                    <button name="action_solve" string="Həll Et" type="object" class="btn-primary" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" string="Ləğv Et" type="object" invisible="state == 'solved' or state == 'cancelled'" />
+
                     <field name="state" widget="statusbar" statusbar_visible="new,in_progress,solved"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Problemin mövzusunu daxil edin..."/>
+                            <field name="name" placeholder="Ticket Nömrəsi" readonly="1"/>
+                            <field name="subject" placeholder="Problemin mövzusunu daxil edin..."/>
                         </h1>
                     </div>
                     <group>
@@ -40,6 +45,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <field name="subject"/>
                 <field name="partner_id"/>
                 <field name="user_id"/>
                 <field name="priority"/>

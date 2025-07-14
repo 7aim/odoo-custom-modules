@@ -1,12 +1,12 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class SupportTicket(models.Model):
     _name = 'support.ticket'
     _description = 'Support Ticket'
-    # Chatter funksionallığı (tarixçə, mesajlar) üçün bu iki modeli irs alırıq
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Mövzu', required=True, tracking=True)
+    name = fields.Char(string='Ticket Nömrəsi', required=True, copy=False, readonly=True, default='Yeni')
+    subject = fields.Char(string='Mövzu', required=True, tracking=True)
     description = fields.Text(string='Açıqlama', tracking=True)
     
     state = fields.Selection([
@@ -27,3 +27,29 @@ class SupportTicket(models.Model):
     
     # 'res.users' Odoo-nun standart "Users" modelidir
     user_id = fields.Many2one('res.users', string='Agent', default=lambda self: self.env.user, tracking=True)
+
+    @api.model
+    def create(self, vals):
+        """Ticket yaradıldıqda avtomatik nömrə ver və müştərini follower et"""
+        if vals.get('name', 'Yeni') == 'Yeni':
+            vals['name'] = self.env['ir.sequence'].next_by_code('support.ticket') or 'Yeni'
+        
+        result = super(SupportTicket, self).create(vals)
+        
+        # Müştərini avtomatik follower et
+        if result.partner_id:
+            result.message_subscribe(partner_ids=[result.partner_id.id])
+        
+        return result
+    
+    def action_start_work(self):
+        for rec in self:
+            rec.state = 'in_progress'
+
+    def action_solve(self):
+        for rec in self:
+            rec.state = 'solved'
+
+    def action_cancel(self):
+        for rec in self:
+            rec.state = 'cancelled'
