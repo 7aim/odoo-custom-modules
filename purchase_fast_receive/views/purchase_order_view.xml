@@ -1,0 +1,16 @@
+<odoo>
+    <record id="purchase_order_form_fast_receive" model="ir.ui.view">
+        <field name="name">purchase.order.fast.receive</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='button_confirm']" position="after">
+                <button name="button_fast_receive"
+                        string="Tek Tıkla Al"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state not in ['draft', 'sent', 'to approve', 'purchase']"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

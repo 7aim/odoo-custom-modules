@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- list View -->
+        <record id="view_custom_printer_list" model="ir.ui.view">
+            <field name="name">custom.printer.list</field>
+            <field name="model">custom.printer</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="printer_type"/>
+                    <field name="is_active"/>
+                    <field name="api_url"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_custom_printer_form" model="ir.ui.view">
+            <field name="name">custom.printer.form</field>
+            <field name="model">custom.printer</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="test_connection" type="object" string="Test Connection" class="btn-primary"/>
+                        <button name="sync_printers" type="object" string="Sync Printers" class="btn-secondary"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="printer_type"/>
+                            </group>
+                            <group>
+                                <field name="is_active"/>
+                                <field name="api_url"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Test Print">
+                                <group>
+                                    <field name="test_content" widget="text"/>
+                                </group>
+                                <group>
+                                    <button name="test_print" type="object" string="Test Print" class="btn-success"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_custom_printer" model="ir.actions.act_window">
+            <field name="name">Custom Printers</field>
+            <field name="res_model">custom.printer</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first printer!
+                </p>
+                <p>
+                    Configure printers to use with your custom API.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="menu_custom_printer_root" 
+                  name="Custom Printers" 
+                  sequence="100"/>
+                  
+        <menuitem id="menu_custom_printer" 
+                  name="Printers" 
+                  action="action_custom_printer"
+                  parent="menu_custom_printer_root"
+                  sequence="10"/>
+    </data>
+</odoo>
