@@ -2,11 +2,11 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import win32print
 import win32ui
-import win32con
 from typing import List, Dict
-import json
 import uvicorn
 from datetime import datetime
+#import win32con
+#import json
 
 app = FastAPI(title="Custom POS Printer API")
 
