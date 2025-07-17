@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_garden_area,access.garden.area,model_garden_area,base.group_user,1,1,1,1
+access_garden_territory,access.garden.territory,model_garden_territory,base.group_user,1,1,1,1
+access_garden_region,access.garden.region,model_garden_region,base.group_user,1,1,1,1
+access_garden_subregion,access.garden.subregion,model_garden_subregion,base.group_user,1,1,1,1
+access_garden_problem,access.garden.problem,model_garden_problem,base.group_user,1,1,1,1
+access_soraqca_panel,access.soraqca.panel,model_soraqca_panel,base.group_user,1,1,1,1

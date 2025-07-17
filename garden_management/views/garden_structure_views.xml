@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Ana Menyular -->
+    <menuitem id="garden_management_menu_root" 
+              name="Bağçılıq Modulu" 
+              sequence="10"/>
+    
+    <menuitem id="menu_land_management_root" 
+              name="Cərgə Paneli" 
+              parent="garden_management_menu_root" 
+              sequence="20"/>
+    
+    <menuitem id="menu_other_panels_root" 
+              name="Digər Panellər" 
+              parent="garden_management_menu_root" 
+              sequence="60"/>
+
+    <!-- ================= SAHƏLƏR ================= -->
+    <record id="view_garden_area_list" model="ir.ui.view">
+        <field name="name">garden.area.list</field>
+        <field name="model">garden.area</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_garden_area_form" model="ir.ui.view">
+        <field name="name">garden.area.form</field>
+        <field name="model">garden.area</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Sahənin adı..."/></h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_garden_area" model="ir.actions.act_window">
+        <field name="name">Sahələr</field>
+        <field name="res_model">garden.area</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_garden_area" 
+              name="Sahələr" 
+              parent="menu_land_management_root" 
+              action="action_garden_area" 
+              sequence="10"/>
+
+    <!-- ================= ƏRAZİLƏR ================= -->
+    <record id="view_garden_territory_list" model="ir.ui.view">
+        <field name="name">garden.territory.list</field>
+        <field name="model">garden.territory</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="area_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_garden_territory_form" model="ir.ui.view">
+        <field name="name">garden.territory.form</field>
+        <field name="model">garden.territory</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Ərazinin adı..."/></h1>
+                    </div>
+                    <group>
+                        <field name="area_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_garden_territory" model="ir.actions.act_window">
+        <field name="name">Ərazilər</field>
+        <field name="res_model">garden.territory</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_garden_territory" 
+              name="Ərazilər" 
+              parent="menu_land_management_root" 
+              action="action_garden_territory" 
+              sequence="20"/>
+
+    <!-- ================= BÖLGƏLƏR ================= -->
+    <record id="view_garden_region_list" model="ir.ui.view">
+        <field name="name">garden.region.list</field>
+        <field name="model">garden.region</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="territory_id"/>
+                <field name="area_id" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_garden_region_form" model="ir.ui.view">
+        <field name="name">garden.region.form</field>
+        <field name="model">garden.region</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Bölgənin adı..."/></h1>
+                    </div>
+                    <group>
+                        <field name="territory_id"/>
+                        <field name="area_id" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_garden_region" model="ir.actions.act_window">
+        <field name="name">Bölgələr</field>
+        <field name="res_model">garden.region</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_garden_region" 
+              name="Bölgələr" 
+              parent="menu_land_management_root" 
+              action="action_garden_region" 
+              sequence="30"/>
+
+    <!-- ================= KİÇİK BÖLGƏLƏR ================= -->
+    <record id="view_garden_subregion_list" model="ir.ui.view">
+        <field name="name">garden.subregion.list</field>
+        <field name="model">garden.subregion</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="region_id"/>
+                <field name="territory_id" optional="show"/>
+                <field name="area_id" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_garden_subregion_form" model="ir.ui.view">
+        <field name="name">garden.subregion.form</field>
+        <field name="model">garden.subregion</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Kiçik bölgənin adı..."/></h1>
+                    </div>
+                    <group>
+                        <field name="region_id"/>
+                        <field name="territory_id" readonly="1"/>
+                        <field name="area_id" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_garden_subregion" model="ir.actions.act_window">
+        <field name="name">Kiçik Bölgələr</field>
+        <field name="res_model">garden.subregion</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_garden_subregion" 
+              name="Kiçik Bölgələr" 
+              parent="menu_land_management_root" 
+              action="action_garden_subregion" 
+              sequence="40"/>
+
+</odoo>

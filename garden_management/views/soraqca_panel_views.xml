@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Soraqça Paneli Menyu -->
+    <menuitem id="menu_soraqca_panel_root"
+              name="Soraqça Paneli"
+              parent="garden_management.garden_management_menu_root"
+              sequence="40"/>
+
+    <!-- Soraqça Panel Form View -->
+    <record id="view_soraqca_panel_form" model="ir.ui.view">
+        <field name="name">soraqca.panel.form</field>
+        <field name="model">soraqca.panel</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Növün adı..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="panel_type"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Soraqça Panel list View -->
+    <record id="view_soraqca_panel_list" model="ir.ui.view">
+        <field name="name">soraqca.panel.list</field>
+        <field name="model">soraqca.panel</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="panel_type"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Soraqça Panel Action -->
+    <record id="action_soraqca_panel" model="ir.actions.act_window">
+        <field name="name">Soraqça Paneli</field>
+        <field name="res_model">soraqca.panel</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                İlk növünüzü yaradın!
+            </p>
+            <p>
+                Panel növlərini buradan idarə edin.
+            </p>
+        </field>
+    </record>
+
+    <!-- Soraqça Panel Menu -->
+    <menuitem id="menu_soraqca_panel"
+              name="Soraqçalar"
+              parent="garden_management.menu_other_panels_root"
+              action="action_soraqca_panel"
+              sequence="10"/>
+
+</odoo>

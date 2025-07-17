@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Texnika Paneli Menyu -->
+    <menuitem id="menu_technique_panel_root"
+              name="Texnika Paneli"
+              parent="garden_management.garden_management_menu_root"
+              sequence="30"/>
+
+    <!-- Technique Panel Form View -->
+    <record id="view_technique_panel_form" model="ir.ui.view">
+        <field name="name">technique.panel.form</field>
+        <field name="model">technique.panel</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Texnika adı..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="car_no"/>
+                            <field name="type_of_equipment"/>
+                            <field name="type_of_brand"/>
+                            <field name="car_year"/>
+                        </group>
+                        <group>
+                            <field name="type_of_fuel"/>
+                            <field name="type_of_work"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Technique Panel list View -->
+    <record id="view_technique_panel_list" model="ir.ui.view">
+        <field name="name">technique.panel.list</field>
+        <field name="model">technique.panel</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="car_no"/>
+                <field name="type_of_equipment"/>
+                <field name="type_of_brand"/>
+                <field name="car_year"/>
+                <field name="type_of_fuel"/>
+                <field name="type_of_work"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Technique Panel Action -->
+    <record id="action_technique_panel" model="ir.actions.act_window">
+        <field name="name">Texnika Paneli</field>
+        <field name="res_model">technique.panel</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                İlk texnikanızı yaradın!
+            </p>
+            <p>
+                Bağçılıq texnikalarını idarə edin.
+            </p>
+        </field>
+    </record>
+
+    <!-- Technique Panel Menu -->
+    <menuitem id="menu_technique_panel"
+              name="Texnikalar"
+              parent="garden_management.menu_other_panels_root"
+              action="action_technique_panel"
+              sequence="10"/>
+
+</odoo>
