@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Meyvə Paneli Menyu -->
     <menuitem id="menu_fruits_panel_root"
               name="Meyvə Paneli"
               parent="garden_management.garden_management_menu_root"
               sequence="50"/>
 
-    <!-- Fruits Panel Form View -->
     <record id="view_fruits_panel_form" model="ir.ui.view">
         <field name="name">fruits.panel.form</field>
         <field name="model">fruits.panel</field>
@@ -17,29 +15,21 @@
                     <div class="oe_title">
                         <h1><field name="name" placeholder="Meyvənin adı..."/></h1>
                     </div>
-                    <group>
-                        <group>
-                            <field name="active"/>
-                        </group>
-                    </group>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- Fruits Panel list View -->
     <record id="view_fruits_panel_list" model="ir.ui.view">
         <field name="name">fruits.panel.list</field>
         <field name="model">fruits.panel</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="active"/>
             </list>
         </field>
     </record>
 
-    <!-- Fruits Panel Action -->
     <record id="action_fruits_panel" model="ir.actions.act_window">
         <field name="name">Meyvə Paneli</field>
         <field name="res_model">fruits.panel</field>
@@ -54,7 +44,6 @@
         </field>
     </record>
 
-    <!-- Fruits Panel Menu -->
     <menuitem id="menu_fruits_panel"
               name="Meyvələr"
               parent="garden_management.menu_other_panels_root"

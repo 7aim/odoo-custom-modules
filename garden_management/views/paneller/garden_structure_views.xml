@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Ana Menyular -->
     <menuitem id="garden_management_menu_root" 
               name="Bağçılıq Modulu" 
               sequence="10"/>

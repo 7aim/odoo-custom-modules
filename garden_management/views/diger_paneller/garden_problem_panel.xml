@@ -89,7 +89,7 @@
 
     <menuitem id="menu_problem_panel"
               name="Problem Paneli"
-              parent="garden_management.garden_management_menu_root"
+              parent="garden_management.menu_other_panels_root"
               action="action_garden_problem"
               sequence="10"/>
               

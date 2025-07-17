@@ -5,11 +5,9 @@ class TechniquePanel(models.Model):
     _description = 'Texnika Paneli'
     _rec_name = 'name'
 
-    # ----------- ƏSAS SAHƏLƏR -----------
     name = fields.Char(string='Başlıq', required=True)
     car_no = fields.Char(string='Maşın Nömrəsi', required=True)
 
-    # ----------- DİNAMİK TƏSNİFAT -----------
     type_of_equipment = fields.Selection(
         selection='_get_equipment_types',
         string='Texnika Növü'
@@ -36,7 +34,6 @@ class TechniquePanel(models.Model):
         ('2013', '2013'),('2012', '2012'),('2011', '2011'),('2010', '2010')
     ], string='Araba İli')
 
-    # ----------- DİNAMİK SELECTION METODLARI -----------
     @api.model
     def _get_equipment_types(self):
         return self.env['soraqca.panel'].get_selection_items('texnika_novleri')

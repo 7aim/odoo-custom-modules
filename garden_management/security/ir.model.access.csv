@@ -5,3 +5,8 @@ access_garden_region,access.garden.region,model_garden_region,base.group_user,1,
 access_garden_subregion,access.garden.subregion,model_garden_subregion,base.group_user,1,1,1,1
 access_garden_problem,access.garden.problem,model_garden_problem,base.group_user,1,1,1,1
 access_soraqca_panel,access.soraqca.panel,model_soraqca_panel,base.group_user,1,1,1,1
+access_technique_panel,access.technique.panel,model_technique_panel,base.group_user,1,1,1,1
+access_fruits_panel,access.fruits.panel,model_fruits_panel,base.group_user,1,1,1,1
+access_saygac_panel,access.saygac.panel,model_saygac_panel,base.group_user,1,1,1,1
+access_kran_panel,access.kran.panel,model_kran_panel,base.group_user,1,1,1,1
+access_suvarma_panel,access.suvarma.panel,model_suvarma_panel,base.group_user,1,1,1,1

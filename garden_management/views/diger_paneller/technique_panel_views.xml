@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Texnika Paneli Menyu -->
+
     <menuitem id="menu_technique_panel_root"
               name="Texnika Paneli"
               parent="garden_management.garden_management_menu_root"
               sequence="30"/>
 
-    <!-- Technique Panel Form View -->
     <record id="view_technique_panel_form" model="ir.ui.view">
         <field name="name">technique.panel.form</field>
         <field name="model">technique.panel</field>
@@ -34,7 +33,6 @@
         </field>
     </record>
 
-    <!-- Technique Panel list View -->
     <record id="view_technique_panel_list" model="ir.ui.view">
         <field name="name">technique.panel.list</field>
         <field name="model">technique.panel</field>
@@ -51,7 +49,6 @@
         </field>
     </record>
 
-    <!-- Technique Panel Action -->
     <record id="action_technique_panel" model="ir.actions.act_window">
         <field name="name">Texnika Paneli</field>
         <field name="res_model">technique.panel</field>
@@ -66,7 +63,6 @@
         </field>
     </record>
 
-    <!-- Technique Panel Menu -->
     <menuitem id="menu_technique_panel"
               name="Texnikalar"
               parent="garden_management.menu_other_panels_root"

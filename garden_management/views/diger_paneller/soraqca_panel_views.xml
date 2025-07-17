@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Soraqça Paneli Menyu -->
     <menuitem id="menu_soraqca_panel_root"
               name="Soraqça Paneli"
               parent="garden_management.garden_management_menu_root"
               sequence="40"/>
 
-    <!-- Soraqça Panel Form View -->
     <record id="view_soraqca_panel_form" model="ir.ui.view">
         <field name="name">soraqca.panel.form</field>
         <field name="model">soraqca.panel</field>
@@ -30,7 +28,6 @@
         </field>
     </record>
 
-    <!-- Soraqça Panel list View -->
     <record id="view_soraqca_panel_list" model="ir.ui.view">
         <field name="name">soraqca.panel.list</field>
         <field name="model">soraqca.panel</field>
@@ -43,7 +40,6 @@
         </field>
     </record>
 
-    <!-- Soraqça Panel Action -->
     <record id="action_soraqca_panel" model="ir.actions.act_window">
         <field name="name">Soraqça Paneli</field>
         <field name="res_model">soraqca.panel</field>
@@ -58,7 +54,6 @@
         </field>
     </record>
 
-    <!-- Soraqça Panel Menu -->
     <menuitem id="menu_soraqca_panel"
               name="Soraqçalar"
               parent="garden_management.menu_other_panels_root"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
 class FruitsPanel(models.Model):
@@ -7,5 +6,3 @@ class FruitsPanel(models.Model):
     _rec_name = 'name'
 
     name = fields.Char(string='Meyvenin adı', required=True)
-
-    active = fields.Boolean(string='Aktiv', default=True)
