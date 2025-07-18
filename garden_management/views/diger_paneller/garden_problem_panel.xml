@@ -19,37 +19,38 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" placeholder="Problem başlığı..."/></h1>
+                        <h1><field name="name" placeholder="Problem başlığı..." readonly="state in ('done', 'cancelled')"/></h1>
                     </div>
                     <group>
                         <group id="left-group">
                             <field name="area_id" readonly="1"/>
                             <field name="territory_id" readonly="1"/>
                             <field name="region_id" readonly="1"/>
-                            <field name="subregion_id"/>
-                            <field name="rows"/>
+                            <field name="subregion_id" readonly="state in ('done', 'cancelled')"/>
+                            <field name="rows" readonly="state in ('done', 'cancelled')"/>
                         </group>
                         <group id="right-group">
-                            <field name="executor_id"/>
-                            <field name="inspector_id"/>
+                            <field name="executor_id" readonly="state in ('done', 'cancelled')"/>
+                            <field name="inspector_id" readonly="state in ('done', 'cancelled')"/>
                             <field name="create_date" string="Yaradılma Tarixi" readonly="1"/>
-                            <field name="deadline"/>
-                            <field name="priority" widget="priority"/>
+                            <field name="deadline" invisible="state == 'done'" readonly="state in ('done', 'cancelled')"/>
+                            <field name="end_date" string="Bitmə Tarixi" readonly="1" invisible="state != 'done'"/>
+                            <field name="priority" widget="priority" readonly="state in ('done', 'cancelled')"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="problem_type"/>
+                            <field name="problem_type" readonly="state in ('done', 'cancelled')"/>
                         </group>
                          <group>
-                            <field name="image" widget="image" class="oe_avatar"/>
+                            <field name="image" widget="image" class="oe_avatar" readonly="state in ('done', 'cancelled')"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Qeydlər">
                             <group>
-                                <field name="note" placeholder="Problem haqqında ətraflı qeyd..."/>
-                                <field name="inspector_note" placeholder="Yoxlayan şəxsin qeydləri..."/>
+                                <field name="note" placeholder="Problem haqqında ətraflı qeyd..." readonly="state in ('done', 'cancelled')"/>
+                                <field name="inspector_note" placeholder="Yoxlayan şəxsin qeydləri..." readonly="state in ('done', 'cancelled')"/>
                             </group>
                         </page>
                     </notebook>
@@ -73,8 +74,9 @@
                 <field name="rows"/>
                 <field name="inspector_id"/>
                 <field name="executor_id"/>
-                <field name="create_date" string="Yaradılma Tarixi"/>
+                <field name="create_date"/>
                 <field name="deadline"/>
+                <field name="end_date"/>
                 <field name="priority" widget="priority" readonly="1"/>
                 <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'in_progress'" decoration-warning="state == 'new'"/>
             </list>
@@ -88,7 +90,7 @@
     </record>
 
     <menuitem id="menu_problem_panel"
-              name="Problem Paneli"
+              name="Problemlər"
               parent="garden_management.menu_other_panels_root"
               action="action_garden_problem"
               sequence="10"/>

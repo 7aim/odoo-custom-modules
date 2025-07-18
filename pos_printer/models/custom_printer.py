@@ -9,11 +9,6 @@ except ImportError:
     _logger.warning("requests library not found. Install with: pip install requests")
     requests = None
 
-try:
-    import json
-except ImportError:
-    json = None
-
 class CustomPrinter(models.Model):
     _name = 'custom.printer'
     _description = 'Custom Printer Management'
@@ -26,52 +21,78 @@ class CustomPrinter(models.Model):
         ('label', 'Label Printer'),
         ('document', 'Document Printer')
     ], default='receipt')
-    test_content = fields.Text('Test Content', default="Test Print\n-----------\nHello World!\nBu test çapıdır.")
+    test_content = fields.Text('Test Content', default="""MAĞAZA ADI
+123 Küçə, Şəhər
+Tel: 012-345-67-89
+--------------------------------
+Tarix: 17.07.2025 15:30
+Qəbz №: 001
+--------------------------------
+Çörək                    2x1.50
+                        = 3.00
+Süd                      1x2.00
+                        = 2.00
+--------------------------------
+CƏMİ:               5.00 AZN
 
-    @api.model
-    def get_available_printers(self):
-        """API-dən mövcud printerləri alır"""
-        if not requests:
-            _logger.error("requests library not available")
-            return []
-            
-        try:
-            response = requests.get(f"{self.api_url}/printers", timeout=5)
-            if response.status_code == 200:
-                data = response.json()
-                return data.get('printers', [])
-        except Exception as e:
-            _logger.error(f"Printer API error: {e}")
-            return []
+Təşəkkür edirik!
+Yenidən gələcəyinizi gözləyirik""")
 
-    def send_print_job(self, print_data):
-        """Çap işini göndərir"""
+    def send_print_job(self, print_data, print_type="receipt"):
+        """Çap işini göndərir - təkmilləşdirilmiş"""
         if not requests:
             return {'success': False, 'error': 'requests library not available'}
             
         try:
             payload = {
                 'printer': self.name,
-                'data': print_data
+                'data': print_data,
+                'type': print_type
             }
             
             response = requests.post(
                 f"{self.api_url}/print",
                 json=payload,
-                timeout=10
+                timeout=15
             )
             
             if response.status_code == 200:
                 return {'success': True, 'message': 'Print successful'}
             else:
-                return {'success': False, 'error': 'Print failed'}
+                return {'success': False, 'error': f'Print failed: {response.text}'}
                 
         except Exception as e:
             _logger.error(f"Print job error: {e}")
             return {'success': False, 'error': str(e)}
 
+    def send_formatted_receipt(self, receipt_data):
+        """Formatlanmış qəbz göndərir"""
+        if not requests:
+            return {'success': False, 'error': 'requests library not available'}
+            
+        try:
+            payload = {
+                'printer': self.name,
+                'receipt': receipt_data
+            }
+            
+            response = requests.post(
+                f"{self.api_url}/print/formatted",
+                json=payload,
+                timeout=15
+            )
+            
+            if response.status_code == 200:
+                return {'success': True, 'message': 'Formatted receipt printed'}
+            else:
+                return {'success': False, 'error': f'Print failed: {response.text}'}
+                
+        except Exception as e:
+            _logger.error(f"Formatted print error: {e}")
+            return {'success': False, 'error': str(e)}
+
     def test_connection(self):
-        """API connection test edir"""
+        """API bağlantısını test edir"""
         if not requests:
             return {
                 'type': 'ir.actions.client',
@@ -84,17 +105,30 @@ class CustomPrinter(models.Model):
             }
             
         try:
-            response = requests.get(f"{self.api_url}/status", timeout=5)
+            response = requests.get(f"{self.api_url}/status", timeout=10)
+            
             if response.status_code == 200:
+                data = response.json()
                 return {
                     'type': 'ir.actions.client',
                     'tag': 'display_notification',
                     'params': {
                         'title': 'Success!',
-                        'message': 'API connection successful',
+                        'message': f'API connected successfully! Status: {data.get("status", "unknown")}',
                         'type': 'success'
                     }
                 }
+            else:
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Error!',
+                        'message': f'API connection failed: {response.status_code}',
+                        'type': 'danger'
+                    }
+                }
+                
         except Exception as e:
             return {
                 'type': 'ir.actions.client',
@@ -107,7 +141,7 @@ class CustomPrinter(models.Model):
             }
 
     def sync_printers(self):
-        """API-dən printerləri sync edir"""
+        """API-dən printerləri sinxronlaşdırır"""
         if not requests:
             return {
                 'type': 'ir.actions.client',
@@ -120,25 +154,47 @@ class CustomPrinter(models.Model):
             }
             
         try:
-            printers = self.get_available_printers()
-            for printer_data in printers:
-                existing = self.search([('name', '=', printer_data['name'])])
-                if not existing:
-                    self.create({
-                        'name': printer_data['name'],
-                        'printer_type': 'receipt',
-                        'is_active': True
-                    })
+            response = requests.get(f"{self.api_url}/printers", timeout=10)
             
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': 'Success!',
-                    'message': f'{len(printers)} printers synced',
-                    'type': 'success'
+            if response.status_code == 200:
+                data = response.json()
+                printers = data.get('printers', [])
+                
+                # Yeni printerləri yarat
+                created_count = 0
+                for printer_info in printers:
+                    printer_name = printer_info.get('name')
+                    if printer_name:
+                        existing = self.search([('name', '=', printer_name)], limit=1)
+                        if not existing:
+                            self.create({
+                                'name': printer_name,
+                                'api_url': self.api_url,
+                                'printer_type': 'receipt',
+                                'is_active': True
+                            })
+                            created_count += 1
+                
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Success!',
+                        'message': f'Found {len(printers)} printers, created {created_count} new records',
+                        'type': 'success'
+                    }
                 }
-            }
+            else:
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Error!',
+                        'message': f'Failed to get printers: {response.status_code}',
+                        'type': 'danger'
+                    }
+                }
+                
         except Exception as e:
             return {
                 'type': 'ir.actions.client',
@@ -151,8 +207,8 @@ class CustomPrinter(models.Model):
             }
 
     def test_print(self):
-        """Test çapı edir"""
-        result = self.send_print_job(self.test_content)
+        """Test çapı edir - yaxşılaşdırılmış"""
+        result = self.send_print_job(self.test_content, "receipt")
         
         if result['success']:
             return {
@@ -160,7 +216,7 @@ class CustomPrinter(models.Model):
                 'tag': 'display_notification',
                 'params': {
                     'title': 'Success!',
-                    'message': 'Test print successful',
+                    'message': 'Test print successful - formatlanmış',
                     'type': 'success'
                 }
             }

@@ -116,13 +116,19 @@
         <field name="model">suvarma.panel</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_mark_in_progress" string="İcraya Başla" type="object" class="oe_highlight" invisible="state != 'new'"/>
+                    <button name="action_mark_done" string="Tamamla" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_mark_cancelled" string="Ləğv Et" type="object" invisible="state in ('done', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,done"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" placeholder="Suvarma adı..."/></h1>
+                        <h1><field name="name" placeholder="Suvarma adı..." readonly="state in ('done', 'cancelled')"/></h1>
                     </div>
                     
                     <group string="Kran Məlumatları">
-                        <field name="kran_id"/>
+                        <field name="kran_id" readonly="state in ('done', 'cancelled')"/>
                     </group>
 
                     <group string="Ərazi Məlumatları" col="4">
@@ -130,23 +136,23 @@
                         <field name="territory_id"/>
                         <field name="region_id"/>
                         <field name="subregion_id"/>
-                        <field name="rows" colspan="4"/>
+                        <field name="rows" colspan="4" readonly="state in ('done', 'cancelled')"/>
                     </group>
 
                     <group string="Suvarma Məlumatları">
                         <group>
-                            <field name="start_date"/>
-                            <field name="end_date"/>
+                            <field name="start_date" readonly="state in ('done', 'cancelled')"/>
+                            <field name="end_date" readonly="state in ('done', 'cancelled')"/>
                             <field name="duration" readonly="1"/>
                         </group>
-                        <group>
-                            <field name="amount_of_water"/>
-                            <field name="land_size"/>
+                        <group> 
+                            <field name="amount_of_water" readonly="state in ('done', 'cancelled')"/>
+                            <field name="land_size" readonly="state in ('done', 'cancelled')"/>
                         </group>
                     </group>
 
                     <group string="Əlavə Məlumatlar">
-                        <field name="description" placeholder="Suvarma haqqında qeydlər..."/>
+                        <field name="description" placeholder="Suvarma haqqında qeydlər..." readonly="state in ('done', 'cancelled')"/>
                     </group>
                 </sheet>
             </form>
@@ -167,6 +173,7 @@
                 <field name="duration"/>
                 <field name="amount_of_water"/>
                 <field name="land_size"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'in_progress'" decoration-warning="state == 'new'"/>
             </list>
         </field>
     </record>
