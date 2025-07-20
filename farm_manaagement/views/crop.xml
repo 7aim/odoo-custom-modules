@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+            <record id="product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form//field[@name='name']" position="after">
+                    <field name="season"/>
+                </xpath>
+            </field>
+            </record> -->
+
+        <!-- Crop Details list -->
+
+        <record id="crop_list" model="ir.ui.view">
+            <field name="name">custome.crop.list</field>
+            <field name="model">crop.crop</field>
+            <field name="arch" type="xml">
+                <list string="Crop list">
+                    <field name="owner_name"/>
+                    <field name="crop_name" widget="many2many_tags"/>
+                    <field name="land_Of_hectore"/>
+                    <field name="location"/>
+                    <field name="worker_name"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Crop Details Form -->
+
+        <record id="crop_form" model="ir.ui.view">
+            <field name="name">custome.crop.crop</field>
+            <field name="model">crop.crop</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button id="button_confirm" name="action_draft" string="Draft" class="btn-primary"
+                                type="object"/>
+                        <button id="button_draft" name="action_confirm" string="In Progress" class="btn-primary"
+                                type="object"/>
+                        <button id="button_finish" name="action_finish" string="Finish" class="btn-primary"
+                                type="object"/>
+                        <field name="state" widget="statusbar" stastusbar_visible="draft,in progress,finished"/>
+                    </header>
+                    <sheet>
+                        <div>
+                            <h2 style="margin-bottom:10px;">
+                                <field name="sequence" readonly="1"/>
+                            </h2>
+                            <!--<label for="owner_name"/>
+                            <h2 class="oe_set">
+                                <field name="owner_name" style="width:550px; height:30px;"/>
+                            </h2>-->
+                        </div>
+                        <group>
+                            <group>
+                                <field name="owner_name"/>
+                                <field name="season_name"/>
+                                <field name="crop_name" widget="many2many_tags"/>
+                                <field name="location"/>
+                            </group>
+                            <group>
+                                <field name="land_Of_hectore"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="period_to_produce"/>
+                                <field name="produce"/>
+                            </group>
+
+                            <!-- domain="[('start_date','=', 'true')]" -->
+                        </group>
+                        <notebook>
+                            <page string="Expenses Crop">
+                                <field name="crop_ids">
+                                    <list string="Expance Details" editable="bottom"
+                                          decoration-success=" product_uom_qty > 0">
+                                        <field name="crop"/>
+                                        <field name="worker_name" widget="many2many_tags"/>
+                                        <field name="expense_name"/>
+                                        <field name="product_uom"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="price_unit"/>
+                                        <field name="tax_id"/>
+                                        <field name="total_price"/>
+                                        <field name="expense_date"/>
+                                    </list>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <field name="amount_untaxed" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="amount_tax" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="amount_total"/>
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator"
+                                           widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                                <field name="note" class="oe_inline"
+                                       placeholder="Setup default terms and conditions in your sales settings ..."/>
+                            </page>
+                            <page string="Scheduler">
+                                <field name="sedule_id">
+                                    <list string="Seduler" editable="bottom">
+                                        <field name="worker_name" widget="many2many_tags"/>
+                                        <field name="task_name"/>
+                                        <field name="task_date"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_graph" model="ir.ui.view">
+            <field name="name">crop.graph</field>
+            <field name="model">crop.crop</field>
+            <field name="arch" type="xml">
+                <graph string="Crop" type="bar">
+                    <field name="crop_name" type="row"/>
+                    <field name="end_date"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_graph_expence" model="ir.ui.view">
+            <field name="name">crop.graph.expence</field>
+            <field name="model">crop.name.line</field>
+            <field name="arch" type="xml">
+                <graph string="Crop Expance">
+                    <field name="total_price" type="measure"/>
+                    <field name="expense_date"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="farm_house_menu" model="ir.actions.act_window">
+            <field name="name">Farm Menu</field>
+            <field name="res_model">crop.crop</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="farm_report" model="ir.actions.act_window">
+            <field name="name">Farm Menu</field>
+            <field name="res_model">crop.crop</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">graph</field>
+        </record>
+
+        <record id="farm_report_expance" model="ir.actions.act_window">
+            <field name="name">Farm Menu</field>
+            <field name="res_model">crop.name.line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">graph</field>
+        </record>
+
+        <!-- record for direct mail sending -->
+        <!-- <record id="action_True_server_sedule" model="ir.view">
+            <field name="type">ir.actions.server</field>
+            <field name="name">Human readable name</field>
+            <field name="model_id" ref="farm_manaagement.model_sedule_sedule" />
+            <field name="condition" eval="True" />
+            <field name="sequence" eval="5" />
+            <field name="context" eval="{}" />
+             <field name="state"> code </field>
+             <field name="code"> self.worker_task_name() </field>
+             <field name="action_id" ref="farm_report"/>
+        </record> -->
+
+
+        <menuitem id="fram_menu"
+                  name="Farm"
+                  sequence="1"/>
+
+        <menuitem id="farm_menu_item"
+                  name="Crop"
+                  parent="fram_menu"
+                  action="farm_house_menu"
+                  sequence="3"/>
+
+        <menuitem id="farm_report_menu"
+                  name="Reporting"
+                  parent="fram_menu"
+                  sequence="10"/>
+
+        <menuitem id="farm_report_crop_menu"
+                  name="Crop"
+                  parent="farm_report_menu"
+                  action="farm_report"
+                  sequence="10"/>
+
+        <menuitem id="farm_report_expance_menu"
+                  name="Expenses"
+                  parent="farm_report_menu"
+                  action="farm_report_expance"
+                  sequence="11"/>
+
+
+    </data>
+</odoo>

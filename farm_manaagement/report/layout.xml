@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   
+    <!--Custom layout for Invoice Report-->
+
+    <template id="external_layout_invoice_report">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+        <t t-call="farm_manaagement.external_layout_standard_custom_invoice"><t t-raw="0"/></t>
+    </template>
+
+    <template id="external_layout_standard_custom_invoice">
+
+        <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+            <div class="row">
+                <div class="col-6">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 80px;" alt="Logo"/>
+                </div>
+                <div class="col-6 text-right" style="margin-top: 10px;">
+                    <span class="float-right" style="font-size:40px;font-family:Liberation Serif;"><span t-field="company.parent_id.name"/></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+            <div class="last-page text-center text-muted oe_mt8 oe_mb8" style="font-size: 12px;">
+                <div>
+                    <span t-field="company.parent_id.name"/>
+                    <span t-field="company.street"/>
+                    <span style="margin-left: 32px;"> Phone: <span t-field="company.phone"/></span>
+                    <span style="margin-left: 32px;"> Email: <span t-field="company.email"/></span>
+                    <!-- <span style="margin-left: 32px;"> Invoice: <span t-field="company.invoice_date"/></span> -->
+
+                </div>
+            </div>
+            <div class="footer o_standard_footer">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <div t-if="report_type == 'pdf'" class="text-muted oe_mt8">
+                        Page: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+</odoo>

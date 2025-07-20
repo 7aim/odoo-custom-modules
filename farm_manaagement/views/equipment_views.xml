@@ -1,0 +1,127 @@
+<?xml version='1.1' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record id="equipment_list_view" model="ir.ui.view">
+            <field name="name">equipment.list.view</field>
+            <field name="model">equipment.equipment</field>
+            <field name="arch" type="xml">
+                <list string='Equipment'>
+                    <field name="equipment_name"/>
+                    <field name="equipment_category"/>
+                    <field name="company"/>
+                    <field name="used_by"/>
+                    <field name="maintenance_team"/>
+                    <field name="technician"/>
+                    <field name="used_in_location"/>
+                    <field name="description"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="equipment_form_view" model="ir.ui.view">
+            <field name="name">equipment.form.view</field>
+            <field name="model">equipment.equipment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            <h2 style="margin-bottom:10px;">
+                                <field name="sequence" readonly="1"/>
+                            </h2>
+                            <label for="equipment_name"/>
+                            <h2 class="oe_set">
+                                <field name="equipment_name" style="width:550px; height:30px;"/>
+                            </h2>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="equipment_category"/>
+                                <field name="company"/>
+                                <field name="used_by" widget="radio"/>
+                                <field name="maintenance_team"/>
+                            </group>
+                            <group>
+                                <field name="technician"/>
+                                <field name="used_in_location"/>
+                                <field name="description"/>
+                            </group>
+                            <group>
+                                <field name="employee_name"/>
+                                <field name="department_name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="equipment_category_list_view" model="ir.ui.view">
+            <field name="name">equipment.category.list.view</field>
+            <field name="model">equipment.category</field>
+            <field name="arch" type="xml">
+                <list string='Equipment'>
+                    <field name="category_name"/>
+                    <field name="user_name"/>
+                    <field name="company"/>
+                </list>
+            </field>
+        </record>
+
+
+        <record id="equipment_category_form_view" model="ir.ui.view">
+            <field name="name">equipment.category.form.view</field>
+            <field name="model">equipment.category</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            <label for="category_name"/>
+                            <h2 class="oe_set">
+                                <field name="category_name" style="width:550px; height:30px;"/>
+                            </h2>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_name"/>
+                                <field name="company"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id='action_equipment_view' model='ir.actions.act_window'>
+            <field name='name'>Equipment</field>
+            <field name='res_model'>equipment.equipment</field>
+            <field name='view_mode'>list,form</field>
+            <field name='help' type='html'>
+                <p class='oe_view_nocontent_create'>'Create new Record'</p>
+            </field>
+        </record>
+
+        <record id='action_equipment_category_view' model='ir.actions.act_window'>
+            <field name='name'>Equipment Category</field>
+            <field name='res_model'>equipment.category</field>
+            <field name='view_mode'>list,form</field>
+            <field name='help' type='html'>
+                <p class='oe_view_nocontent_create'>'Create new Record'</p>
+            </field>
+        </record>
+
+        <menuitem id="action_equipment"
+                  name="Equipment"
+                  parent="fram_menu"
+                  action="action_equipment_view"
+                  sequence="3"/>
+
+        <menuitem id="action_equipment_category"
+                  name="Equipment Categoty"
+                  parent="farm_configuration_menu_item"
+                  action="action_equipment_category_view"
+                  sequence="4"/>
+
+    </data>
+</odoo>

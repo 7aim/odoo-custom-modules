@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <record id="crop_email_template" model="mail.template">
+            <field name="name">Sedule Template Email</field>
+            <field name="subject">{{object.user_company.name}}:Information About Worker Task</field>
+            <field name="email_from">{{object.user_company.name or ''}}</field>
+            <field name="email_to">{{object.user_company.email or ''}}</field>
+            <field name="model_id" ref="farm_manaagement.model_sedule_sedule"/>
+            
+            <!-- <field name="report_template" ref="mdecocare.staff_report"/> -->
+            <!-- <field name="report_name">${object.name or ''}</field> -->
+            <field name="body_html" type="html">
+                    <p>Hello,<b><i><span t-field="object.worker_name" /></i></b></p>
+                    <!-- <p>You are from <b><i><span t-out="object.location" /></i></b></p> -->
+                    <p>We  give You Information About Your Task.</p>
+                    <b><span t-out="object.task_name" /></b>
+                    <p>Thank you.</p>
+                     
+                    
+            </field>
+                
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo> 
+    <record id="timesheet_report" model="ir.actions.report">
+        <field name="name">Timesheet Entries</field>
+        <field name="model">worker.task</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">farm_manaagement.report_timesheet_of_worker</field>
+        <field name="report_file">farm_manaagement.report_timesheet_of_worker</field>
+        <field name="binding_model_id" ref="model_worker_task"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>              

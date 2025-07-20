@@ -1,0 +1,456 @@
+<?xml version='1.1' encoding='utf-8'?>
+<odoo>
+    <!-- <record id="hr_employee_form_view_website_published" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml"> -->
+    <!-- <xpath expr="//form//sheet//notebook//page//field[@name='work_location']" position="replace">
+        <field name="location"/>
+    </xpath>  -->
+    <!-- <xpath expr="//form//sheet//group//group[2]//field[@name='parent_id']" position="after">
+        <field name="type_id"/>
+    </xpath>
+</field>
+</record> -->
+
+    <!-- agriculture list views -->
+
+    <record id="view_employee_type_list" model="ir.ui.view">
+        <field name="name">employee.type.list.view</field>
+        <field name="model">employee.type</field>
+        <field name="arch" type="xml">
+            <list string='Employee'>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="date"/>
+                <field name="email"/>
+                <field name="age"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- agriculture form views -->
+
+    <record id="employee_type_form_view" model="ir.ui.view">
+        <field name="name">employee.form.view</field>
+        <field name="model">employee.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="photo" widget='image' class="oe_avatar oe_left"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="country_id"/>
+                            <field name="state_id"/>
+                            <field name="age"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="date"/>
+                            <field name="email"/>
+
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="agriculture_form_view" model="ir.ui.view">
+        <field name="name">agriculture.form.view</field>
+        <field name="model">agriculture.agriculture</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="photo" widget='image' class="oe_avatar oe_left"/>
+                    <h2 style='margin-left:100px;margin-top:21px'>
+                        <field name='owner_name' placeholder='Name' style='width:250px'/>
+                    </h2>
+                    <h2 style='margin-left:100px;margin-top:10px'>
+                        <field name='owner_type' placeholder="e.g. Part Time" style='width:200px'/>
+                    </h2>
+                    <group>
+                        <group>
+                            <label for="street" string="Address"/>
+                            <div class="o_address_format" name="div_address">
+                                <field name="street" placeholder="street..." class="o_address_street"/>
+                                <field name="street2" placeholder="street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                       options='{"no_open": True, "no_create": True}' nolabel="1"/>
+                            </div>
+                            <field name="agree_land"/>
+                        </group>
+                        <group>
+                            <field name="phone" widget="phone" placeholder="+91 899999...."/>
+                            <field name="mobile" widget="phone" placeholder="+91 899999...."/>
+                            <field name="email" widget="email" placeholder="example@email.com"/>
+                            <field name="user_company"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <!-- <field name="type" /> -->
+                        </group>
+                        <group>
+                            <field name="priority" widget="priority"/>
+                        </group>
+                    </group>
+
+                    <!-- agriculture notbook -->
+                    <notebook>
+                        <page string="Farm Land">
+                            <field name="farm_land_ids">
+                                <list string="Farm Details" editable="bottom" decoration-success="acre >=50">
+                                    <!-- <field name="owner_name"/> -->
+                                    <field name="location"/>
+                                    <field name="acre"/>
+                                    <field name="worker" widget="many2many_tags"/>
+                                    <field name="crop"/>
+                                    <field name="year"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="location"/>
+                                            <field name="acre"/>
+                                            <field name="worker" widget="many2many_tags"/>
+                                        </group>
+                                        <group>
+                                            <field name="crop"/>
+                                            <field name="year"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Crop History">
+                            <field name="crop_history_ids">
+                                <list string="Crop History" editable="bottom">
+                                    <field name="location_id"/>
+                                    <field name="crop"/>
+                                    <field name="year"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="location_id"/>
+                                            <field name="crop"/>
+                                        </group>
+                                        <group>
+                                            <field name="year"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- agriculture list view -->
+
+    <record id="view_agriculture_list" model="ir.ui.view">
+        <field name="name">agriculture.list.view</field>
+        <field name="model">agriculture.agriculture</field>
+        <field name="arch" type="xml">
+            <list string='Agriculture'>
+                <field name="owner_name"/>
+                <field name="country_id"/>
+                <field name="state_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- agriculture kanban view -->
+
+    <record id="view_agriculture_kanban" model="ir.ui.view">
+        <field name="name">agriculture.kanban.view</field>
+        <field name="model">agriculture.agriculture</field>
+        <field name="arch" type="xml">
+            <kanban string='agriculture_kanban' class="o_agriculture"
+                    quick_create_view="farm_manaagement.task_kanban_view_create">
+                <field name="activity_state"/>
+                <field name="photo"/>
+                <!--                <field name="image_128"/>-->
+                <progressbar field="activity_state"
+                             colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <!-- <div class="o_agriculture_set"> -->
+                        <div t-attf-class="oe_kanban_global_click"
+                             style="background-color:golgen;color:sky blue;border:2px solid purple;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                                    <field name="photo" class="o_kanban_image_fill_left d-block" widget='image'/>
+                                </div>
+                                <ul style="list-style-type:none;">
+                                    <li style="margin-bottom: 8px;">
+                                        <span class="fa fa-user icon-large" style="margin-right: 8px;"></span>
+                                        <!-- <b class="set_css">Name :</b> -->
+                                        <field name="owner_name"/>
+                                    </li>
+                                    <li style="margin-bottom: 8px;">
+                                        <span class="fa fa-phone icon-large" style="margin-right: 8px;"></span>
+                                        <!-- <b class="set_css">Phone :</b> -->
+                                        <field name="phone"/>
+                                    </li>
+                                    <li style="margin-bottom: 8px;">
+                                        <span class="fa fa-globe icon-large" style="margin-right: 8px;"></span>
+                                        <!-- <b class="set_css">Country Id :</b> -->
+                                        <field name="country_id"/>
+                                    </li>
+                                    <li style="margin-bottom: 8px;">
+                                        <span class="arrow right"></span>
+                                        <field name="priority" widget="priority" groups="base.group_user"/>
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                        <field name="user_id" widget="many2one_avatar_user" class="set_css"/>
+                                    </li>
+                                </ul>
+                                <div>
+                                    <span class="o_kanban_record_subtitle">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- farm crop config list view -->
+
+    <record id="view_farm_crop_list" model="ir.ui.view">
+        <field name="name">farm.location.list.view</field>
+        <field name="model">farm.crop.config</field>
+        <field name="arch" type="xml">
+            <list string='Farm Location'>
+                <field name="season_name_conf"/>
+                <field name="crop_name_id_conf" widget="many2many_tags"/>
+
+            </list>
+        </field>
+    </record>
+    <!-- farm crop config form view -->
+    <record id="farm_crop_form_view" model="ir.ui.view">
+        <field name="name">farm.location.form.view</field>
+        <field name="model">farm.crop.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="season_name_conf"/>
+                        </group>
+                        <group>
+                            <field name="crop_name_id_conf" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- farmlocation form view -->
+
+    <record id="farm_location_form_view" model="ir.ui.view">
+        <field name="name">farm.location.form.view</field>
+        <field name="model">farm.location</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="owner_name"/>
+                        </group>
+                        <group>
+                            <field name="total_acre"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="location" string="Location">
+                            <field name="location">
+                                <list editable="bottom">
+
+                                    <field name="location"/>
+                                    <field name="acre"/>
+                                </list>
+
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="task_kanban_view_create" model="ir.ui.view">
+        <field name="name">add.kanban.view</field>
+        <field name="model">add.kanban</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="owner_name" style="width:260px;"/>
+                        <field name="phone" style="width:260px;"/>
+                        <field name="country_id" style="width:260px;"/>
+                        <field name="email" style="width:260px;"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- farm.location list view  -->
+
+    <record id="view_farm_location_list" model="ir.ui.view">
+        <field name="name">farm.location.list.view</field>
+        <field name="model">farm.location</field>
+        <field name="arch" type="xml">
+            <list string='Farm Location'>
+                <field name="owner_name"/>
+                <field name="total_acre"/>
+                <!-- <field name="location"/>	 -->
+            </list>
+        </field>
+    </record>
+
+    <!-- 	<record id="cropping_seasons_list" model="ir.ui.view">
+         <field name="name">crop.type.list</field>
+         <field name="model">cropping.seasons.line</field>
+         <field name="arch" type="xml">
+             <list string="Crop Type list">
+                 <field name="kharif"/>
+                 <field name="rabi" />
+                 <field name="zaid"/>
+             </list>
+         </field>
+       </record> -->
+
+    <!--   <record id="cropping_seasons_form_view" model="ir.ui.view">
+           <field name="name">crop.type.form.view</field>
+           <field name="model">cropping.seasons.line</field>
+           <field name="arch" type="xml">
+               <form>
+                   <sheet>
+                       <group>
+                           <group>
+                           <field name="kharif"/>
+                           <field name="zaid"/>
+                           </group>
+                           <group>
+                               <field name="rabi" />
+                           </group>
+                       </group>
+                   </sheet>
+               </form>
+           </field>
+       </record -->>
+
+    <!-- <record id='action_view_cropping_seasons' model='ir.actions.act_window'>
+     <field name='name'>Cropping Seasons</field>
+     <field name='res_model'>cropping.seasons.line</field>
+     <field name='view_mode'>list,form</field>
+     <field name='help' type='html'>
+       <p class='oe_view_nocontent_create'>'Create new Record'</p>
+         </field>
+   </record> -->
+
+    <!-- action_view_employee_type -->
+
+    <record id='action_view_employee_type' model='ir.actions.act_window'>
+        <field name='name'>Employee Type</field>
+        <field name='res_model'>employee.type</field>
+        <field name='view_mode'>list,form</field>
+        <field name='help' type='html'>
+            <p class='oe_view_nocontent_create'>'Create new Record'</p>
+        </field>
+    </record>
+
+    <!-- action_view_agriculture -->
+
+    <record id='action_view_agriculture' model='ir.actions.act_window'>
+        <field name='name'>Agriculture</field>
+        <field name='res_model'>agriculture.agriculture</field>
+        <field name='view_mode'>kanban,list,form</field>
+        <field name='help' type='html'>
+            <p class='oe_view_nocontent_create'>'Create new Record'</p>
+        </field>
+    </record>
+    <!-- action for location.location-->
+    <record id='action_view_farm_location_location' model='ir.actions.act_window'>
+        <field name='name'>Farm Loction</field>
+        <field name='res_model'>location.location</field>
+        <field name='view_mode'>list,form</field>
+        <field name='help' type='html'>
+            <p class='oe_view_nocontent_create'>'Create new Record'</p>
+        </field>
+    </record>
+    <!-- action_view_farm_location -->
+
+    <record id='action_view_farm_location' model='ir.actions.act_window'>
+        <field name='name'>Farm Loction</field>
+        <field name='res_model'>farm.location</field>
+        <field name='view_mode'>list,form</field>
+        <field name='help' type='html'>
+            <p class='oe_view_nocontent_create'>'Create new Record'</p>
+        </field>
+    </record>
+    <!-- action_view_farm_conf_crop -->
+
+    <record id='action_view_farm_conf_crop' model='ir.actions.act_window'>
+        <field name='name'>Farm Crop</field>
+        <field name='res_model'>farm.crop.config</field>
+        <field name='view_mode'>list,form</field>
+        <field name='help' type='html'>
+            <p class='oe_view_nocontent_create'>'Create new Record'</p>
+        </field>
+    </record>
+
+    <menuitem id='agriculture_menu'
+              name='Agriculture'
+              parent="fram_menu"
+              action='action_view_agriculture'
+              sequence="2"/>
+
+    <menuitem id="farm_configuration_menu_item"
+              name="Configuration"
+              parent="fram_menu"
+              sequence="11"/>
+
+
+    <menuitem id="farm_location_submenu_item"
+              name="Location"
+              parent="farm_configuration_menu_item"
+              action="action_view_farm_location"
+              sequence="2"/>
+    <!--
+        <menuitem id="cropping_seasons_submenu_item"
+            name="Cropping Seasons"
+            parent="farm_configuration_menu_item"
+            action="action_view_cropping_seasons"
+            sequence="3"/> -->
+
+    <menuitem id="farm_conf_crop_menu"
+              name="Crop"
+              parent="farm_configuration_menu_item"
+              action="action_view_farm_conf_crop"
+              sequence="4"/>
+
+</odoo>
+
+

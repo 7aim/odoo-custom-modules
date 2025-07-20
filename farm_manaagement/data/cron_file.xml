@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="ir_cron_mail_send" model="ir.cron">
+        <field name="name">Auto Mail Send </field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="model_id" ref="model_sedule_sedule"/>
+        <field name="code">model.worker_task_name()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

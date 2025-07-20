@@ -7,8 +7,8 @@ class SoraqcaPanel(models.Model):
 
     name = fields.Char(string='Ad', required=True)
     panel_type = fields.Selection([
-        ('isci_novleri', 'İşçi Növləri'),
         ('is_novleri', 'İş Növləri'),
+        ('texnika_novleri', 'Texnika Növləri'),
         ('marka', 'Marka'),
         ('problem_novleri', 'Problem Növləri'),
     ], string='Panel Tipi', required=True)

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="custum_header_footer">
+            <div class="header" style="float:left;margin-top:2px;text-align:right;margin-left:6;width:100%;border-bottom:1px solid black;">
+                <div style="font-size:10px;text-align:center;">
+                    
+                    <p>
+                        <h5 style="text-align:center;float:left;">
+                            
+                            <span t-field="o.user_company.street"/><br/>
+                            <span t-field="o.user_company.email"/><br/>
+                            
+                        </h5>
+
+                    </p>
+                    <div style="width:100px;float:right;font-size:16px;">
+                        <span style="float:right;" t-field="o.user_company.website"/><br/>
+                    </div>
+                </div>
+            </div>
+            <div class="article o_report_layout_standard">
+                <t t-out="0"/>
+            </div>
+            <div class="footer o_standard_footer">
+                <div class="text-center" style="border-top:1px solid black;">
+                <div t-if="report_type == 'pdf'" class="text-muted oe_mt8">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+                </div>
+            </div>
+        </template>
+        <template id="agri_qweb_report_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="farm_manaagement.custum_header_footer">
+                        <div class="page" style="page.break.before.always">
+                            <div>
+                                <!-- <div style="float:left;margin-top:10px;">
+                                    
+                                </div> -->
+                                <!-- <div style="float:left;margin-top:2px;text-align:right;margin-left:6;width:100%;">
+                                    <div style="font-size:14px;text-align:center;border-bottom:1px solid black;">
+                                         <h2>
+                                            <span t-field="o.user_company"/>
+                                        </h2> -->
+                                        <!-- <p>
+                                            <h3 style="text-align:center;float:right;">
+                                               
+                                                <span t-field="o.user_company.street"/><br/>
+                                                <span t-field="o.user_company.email"/><br/>
+                                                <span style="float:right;" t-field="o.user_company.website"/><br/>
+                                            </h3>
+                                        </p> -->
+                                    <!-- </div>  -->
+                                <!-- </div> -->
+                            </div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <div style="font-size:20px;">
+                            <ul style="clear:both">
+                                <li><b class="fa fa-user icon-large">Owername:</b><span t-field="o.owner_name" /></li>
+                                <li><b >OwerType:</b><span t-field="o.owner_type" /></li>
+                                <li><b class="fa fa-house">Ower_Land:</b><span t-field="o.agree_land" /></li>
+                                <li><b class="fa fa-phone icon-large">Mobile:</b><span t-field="o.mobile" /></li>
+                                <li><b class="fa fa-envelope icon-large" >Email:</b><span t-field="o.email" /></li>                                     
+                            </ul>
+                            </div>
+                            <br/>
+                            
+                            <t t-foreach="o.farm_land_ids" t-as="m">
+                                <!-- <span t-field="m.owner_name"/> -->
+                                <lable><center><strong><i><u>INFORMATION ABOUT OWNER AND LAND</u></i></strong></center></lable>
+                                <br/>
+                                <br/>
+                                <table class="table table-sm" width="100%"  border="1" style="border:2px solid black;">
+                                    <tr>
+                                        <th style="border:1px solid black;text-align:center;">Owner Nm</th>
+                                        <th style="border:1px solid black;text-align:center;">LOcation</th>
+                                        <th style="border:1px solid black;text-align:center;">Acer</th>
+                                        <th style="border:1px solid black;text-align:center;">Crop</th>
+                                        <th style="border:1px solid black;text-align:center;">Year</th>
+                                        <th style="border:1px solid black;text-align:center;">City</th>
+                                        <th style="border:1px solid black;text-align:center;">Country</th>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td style="border:1px solid black;"><span t-field="m.owner_name" /></td>
+                                        <td style="border:1px solid black;"><span t-field="m.location" /></td>
+                                        <td style="border:1px solid black;"><span t-field="m.acre" /></td>
+                                        <td style="border:1px solid black;"><span t-field="m.crop" /></td>
+                                        <td style="border:1px solid black;"><span t-field="m.year" /></td>
+                                        <td style="border:1px solid black;"><span t-field="o.city" /></td>
+                                        <td style="border:1px solid black;"><span t-field="o.country_id.name" /></td>
+                                        
+                                    </tr>
+                                </table>
+
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+            
+
+            
+        <record id="paperformat_agree_info" model="report.paperformat">
+            <field name="name">Agreeculture Info Custom Paper</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7.0</field>
+            <field name="margin_right">7.0</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+         
+
+            <report
+            id="qweb_report_agri_id"
+            model="agriculture.agriculture"
+            report_type="qweb-pdf"
+            string="Agreeculture"
+            name="farm_manaagement.agri_qweb_report_template"
+            file="farm_manaagement.agri_qweb_report_template" 
+            paperformat="paperformat_agree_info" />
+        
+
+
+
+    </data>
+</odoo>

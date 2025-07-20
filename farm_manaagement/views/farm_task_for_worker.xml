@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="worker_task_list_view" model="ir.ui.view">
+            <field name="name">worker.task.list</field>
+            <field name="model">worker.task</field>
+            <field name="arch" type="xml">
+                <list string="Worker list" decoration-success="state=='confirm' or state=='finished'"
+                      decoration-danger="state=='draft'">
+<!--                    <field name="worker_name"/>-->
+                    <field name="task_name"/>
+                    <field name="task_date"/>
+                    <field name="task_hourse"/>
+                    <field name="state"/>
+                    <field name="progress" widget="progressbar"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="worker_task_form_view" model="ir.ui.view">
+            <field name="name">worker.task.form</field>
+            <field name="model">worker.task</field>
+            <field name="arch" type="xml">
+                <form string="Worker Task">
+                    <header>
+                        <button id="button_confirm" name="action_confirm" string="Confirm" class="btn-primary"
+                                type="object"/>
+                        <button id="button_draft" name="action_draft" string="Draft" class="btn-primary" type="object"/>
+                        <button id="button_finish" name="action_finish" string="Finish" class="btn-primary"
+                                type="object"/>
+                        <field name="state" widget="statusbar" stastusbar_visible="draft,confirm,finished"/>
+                    </header>
+                    <sheet>
+                        <div>
+                            <h2>
+                                <field name="priority" widget="priority"/>
+                                <field name="task_name" style="width:600px; height:35px" required="1"
+                                       placeholder="Task Name ......"/>
+                            </h2>
+                        </div>
+                        <group>
+                            <group>
+                                <!-- <field name="project_name"/> -->
+                                <field name="user_ids"/>
+                                <!-- <field name="res_user_id" widget="many2one_avatar_user"/> -->
+                                <field name="assigned_date"/>
+                            </group>
+                            <group>
+                                <!-- <field name="tags" widget="many2many_tags"/> -->
+                                <field name="worker_name"/>
+                                <field name="deadline"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Worker Timesheets">
+                                <group>
+                                    <group>
+                                        <field name="initially_planned_hours"/>
+                                        <field name="working_days_open" string="Days"/>
+                                        <field name="subtask_effective_hours"/>
+                                    </group>
+                                    <group>
+                                        <field name="progress" widget="progressbar"/>
+                                    </group>
+                                </group>
+                                <field name="timesheet_ids">
+                                    <list editable="bottom">
+                                        <field name="task_date"/>
+                                        <field name="task_name"/>
+                                        <!-- <field name="worker_name"/>	 -->
+                                        <field name="description"/>
+                                        <field name="hourse_spend"/>
+                                    </list>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2">
+                                    <field name="effective_hours" readonly="1"
+                                           style="border-bottom:1px solid black !important"/>
+                                    <field name="remaining_hours" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Extra Info" groups="base.group_no_one">
+                                <group>
+                                    <group>
+                                        <field name="task_no"/>
+                                        <field name="email_cc"/>
+                                    </group>
+                                    <group>
+                                        <field name="last_stage_update"/>
+                                    </group>
+                                    <group string="Working Time to Assign">
+                                        <field name="working_hours_open" string="Hours"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Description">
+                                <group>
+                                    <group>
+                                        <field name="description"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <!-- <page string="Sub-tasks" class="hide">
+                                <field name="work_ids">
+                                    <list editable="bottom">
+                                        <field name="title"/>
+                                        <field name="assigned"/>
+                                        <field name="deadline"/>
+                                        <field name="stage"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Blocked By" class="hide">
+                            </page> -->
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="task_form_view_create" model="ir.ui.view">
+            <field name="name">project.view</field>
+            <field name="model">project.create</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="task_name" style="width:260px;"/>
+                            <field name="worker_name" style="width:260px;"/>
+                            <field name="user_id" style="width:260px;"/>
+                            <field name="assigned_date" style="width:260px;"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="task_kanban_view" model="ir.ui.view">
+            <field name="name">task.kanban.view</field>
+            <field name="model">worker.task</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" on_create="quick_create"
+                        quick_create_view="farm_manaagement.task_form_view_create" class="o_res_partner_kanban">
+                    <field name="activity_state"/>
+                    <progressbar field="activity_state"
+                                 colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="o_agriculture_set">
+                                <div>
+                                    <ul style="list-style-type:none;">
+                                        <li>
+                                            <span class="fa fa-user icon-large"></span>
+                                            <!-- <b class="set_css">Name :</b> -->
+                                            <field name="task_name"/>
+                                        </li>
+                                        <li>
+                                            <!-- <span class="fa fa-phone icon-large"></span> -->
+                                            <!-- <b class="set_css">Phone :</b> -->
+                                            <field name="worker_name"/>
+                                        </li>
+                                        <li>
+                                            <!-- <span class="fa fa-globe icon-large"></span> -->
+                                            <!-- <b class="set_css">Country Id :</b> -->
+                                            <field name="assigned_date"/>
+                                        </li>
+                                        <li>
+                                            <span class="arrow right"></span>
+                                            <field name="priority" widget="priority" groups="base.group_user"/>
+                                            <field name="activity_ids" widget="kanban_activity"/>
+                                            <!-- <field name="user_id" widget="many2one_avatar_user" class="set_css"/> -->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="_worker_task_list" model="ir.actions.act_window">
+            <field name="name">Worker Task</field>
+            <field name="res_model">worker.task</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">kanban,list,form</field>
+        </record>
+
+        <menuitem id="worker_task_menu"
+                  name="Task Management"
+                  parent="fram_menu"
+                  action="_worker_task_list"
+                  sequence="9"/>
+
+    </data>
+</odoo>

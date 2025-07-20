@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="vehicle_list" model="ir.ui.view">
+	        <field name="name">custome.vehical.list</field>
+	        <field name="model">vehical.vehical</field>
+	        <field name="arch" type="xml">
+	        	<list string="Vehical list">
+	        		<field name="vehicle_name"/>
+					<field name="model_name"/>
+					<field name="vehicle_number"/>
+					<field name="driver"/>
+					<field name="fuel_type"/>		        				
+	        	</list>
+	        </field>
+    	</record>
+
+    	<record id="vehical_form" model="ir.ui.view">
+			<field name="name">custome.vehical.vehical</field>
+			<field name="model">vehical.vehical</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<div class="oe_title">
+							<label for="model_name"/>
+							<h1>
+								<field name="model_name" placeholder="e.g. Model S"/>
+							</h1>
+								<label for="license_plate"/>
+							<h2>
+								<field name="license_plate" class="oe_inline" placeholder="e.g. PAE 326"/>
+							</h2>
+						</div>
+					<group>
+						<group>
+							<field name="vehicle_name"/>
+							<field name="vehicle_number"/>
+						</group>
+						<group>
+							<field name="driver"/>
+							<field name="fuel_type"/>
+						</group>
+					</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="vehicle_form_view" model="ir.actions.act_window">
+		    <field name="name">Vehical Menu</field>
+		    <field name="res_model">vehical.vehical</field>
+		    <field name="type">ir.actions.act_window</field>
+		    <field name ="view_mode">list,form</field>
+	    </record>
+
+	    <menuitem id="vehical_main_menu"
+		    name="Vehical" 
+		    parent="fram_menu" 
+		    sequence="5"/>
+
+
+	    <menuitem id="vehical_menu_item"
+		    name="Vehical" 
+		    parent="vehical_main_menu" 
+		    action="vehicle_form_view" 
+		    sequence="1"/>
+
+	</data>
+</odoo>

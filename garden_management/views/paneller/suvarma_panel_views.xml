@@ -141,7 +141,7 @@
 
                     <group string="Suvarma Məlumatları">
                         <group>
-                            <field name="start_date" readonly="state in ('done', 'cancelled')"/>
+                            <field name="create_date" readonly="state in ('done', 'cancelled')"/>
                             <field name="end_date" readonly="state in ('done', 'cancelled')"/>
                             <field name="duration" readonly="1"/>
                         </group>
@@ -168,7 +168,7 @@
                 <field name="kran_id"/>
                 <field name="area_id"/>
                 <field name="territory_id"/>
-                <field name="start_date"/>
+                <field name="create_date"/>
                 <field name="end_date"/>
                 <field name="duration"/>
                 <field name="amount_of_water"/>

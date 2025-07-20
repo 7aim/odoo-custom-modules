@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_timesheet_of_worker">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-set="docs" t-value="docs.with_context(lang=lang)" />
+                    <div class="oe_structure"/>
+                        <div>
+                            <t t-if="o and 'company_id' in o">
+                                <t t-set="company" t-value="o.company_id">
+                                    <img t-if="docs.company_id.logo" t-att-src="'data:image/png;base64,%s' %docs.company_id.logo"/>
+                                </t>
+                            </t>
+                        </div>
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-lg-12">
+                                <h2>
+                                    <span>WorkerTimesheet Entries</span>
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-lg-12">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th name="th_date" class="align-middle"><span>Date</span></th>
+                                            <th name="th_task" class="align-middle"><span>Task Name</span></th>
+                                            <th name="th_employee" class="align-middle"><span>Employee</span></th>
+                                            <th name="th_description" class="align-middle"><span>Description</span></th>
+                                            <th name="th_hours" class="text-right">
+                                                <span >Hours Spend</span>
+                                                <!-- <span t-else="">Time Spent (Hours)</span> -->
+                                            </th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        <t t-foreach="docs.timesheet_ids" t-as="line">
+                                            <tr>
+                                                <td name="td_date" class="text-left">
+                                                    <span t-field="line.task_date"/>
+                                                </td>
+                                                <td name="td_task" class="text-left">
+                                                    <span t-field="line.task_name"/>
+                                                </td>
+                                                <td name="td_employee" class="text-left">
+                                                    <span t-field="line.worker_name"/>
+                                                </td>
+                                                <td name="td_description" class="text-left">
+                                                    <span t-field="line.description"/>
+                                                </td>
+                                                <td name="td_hours" class="text-right">
+                                                    <span t-field="line.hourse_spend"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                   </tbody>
+                                </table>
+                                <table>
+                                    <tr>
+                                        <td >
+                                            <strong>Effective Hours</strong>
+                                            <span t-field="docs.effective_hours"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="margin-top:750px;">
+                            <div>
+                                <t t-if="o and 'company_id' in o">
+                                    <t t-set="company" t-value="o.company_id">
+                                        <span t-field="company.parent_id.name"/>
+                                        <span t-field="company.street"/>
+                                        <span style="margin-left: 32px;"> Phone: <span t-field="company.phone"/></span>
+                                        <span style="margin-left: 32px;"> Email: <span t-field="company.email"/></span>
+                                        <!-- <span style="margin-left: 32px;"> Invoice: <span t-field="company.invoice_date"/></span> -->
+                                    </t>
+                                </t>
+
+                            </div>
+                            <div class="text-center" style="border-top: 1px solid black;">
+                                <div t-if="report_type == 'pdf'" class="text-muted oe_mt8">
+                                    Page: <span class="page"/> / <span class="topage"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </t>
+                </t>
+    </template>
+</odoo>
