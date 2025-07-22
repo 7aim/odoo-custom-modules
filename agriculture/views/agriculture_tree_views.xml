@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_agriculture_list_search" model="ir.ui.view">
+        <field name="name">agriculture.tree.search</field>
+        <field name="model">agriculture.tree</field>
+        <field name="arch" type="xml">
+            <search string="Ağacları Axtar">
+                <field name="name" string="Ağac Kodu"/>
+                <field name="variety" string="Növü"/>
+                <separator/>
+                <filter string="Məhsuldar" name="filter_productive" domain="[('state', '=', 'productive')]"/>
+                <filter string="Xəstə" name="filter_sick" domain="[('state', '=', 'sick')]"/>
+                <filter string="Cavan" name="filter_young" domain="[('state', '=', 'young')]"/>
+                <separator/>
+                <group expand="1" string="Görə Qruplaşdır">
+                    <filter string="Sahəyə Görə" name="group_by_plot" context="{'group_by':'plot_id'}"/>
+                    <filter string="Cərgəyə Görə" name="group_by_row" context="{'group_by':'row_id'}"/>
+                    <filter string="Növünə Görə" name="group_by_variety" context="{'group_by':'variety'}"/>
+                    <filter string="Vəziyyətinə Görə" name="group_by_state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_agriculture_list_form" model="ir.ui.view">
+        <field name="name">agriculture.tree.form</field>
+        <field name="model">agriculture.tree</field>
+        <field name="arch" type="xml">
+            <form string="Ağac">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="young,productive,sick"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="variety" placeholder="Məs: Qızıləhmədi, Fəxri..."/>
+                            <field name="plant_date"/>
+                        </group>
+                        <group>
+                            <field name="row_id"/>
+                            <field name="plot_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_agriculture_tree_list" model="ir.ui.view">
+        <field name="name">agriculture.tree.list</field>
+        <field name="model">agriculture.tree</field>
+        <field name="arch" type="xml">
+            <list string="Ağaclar">
+                <field name="name"/>
+                <field name="variety"/>
+                <field name="row_id"/>
+                <field name="plot_id" optional="hide"/>
+                <field name="plant_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'productive'" decoration-warning="state == 'sick'" decoration-info="state == 'young'"/>
+            </list>
+        </field>
+    </record>
+
+    </odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_agriculture_plot_form" model="ir.ui.view">
+        <field name="name">agriculture.plot.form</field>
+        <field name="model">agriculture.plot</field>
+        <field name="arch" type="xml">
+            <form string="Təsərrüfat Sahəsi">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Məs: Günəşli Tarla"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="area"/>
+                            <field name="location"/>
+                        </group>
+                        <group>
+                            <field name="row_count"/>
+                            <field name="tree_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Cərgələr">
+                            <field name="row_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_agriculture_plot_list" model="ir.ui.view">
+        <field name="name">agriculture.plot.list</field>
+        <field name="model">agriculture.plot</field>
+        <field name="arch" type="xml">
+            <list string="Təsərrüfat Sahələri">
+                <field name="name"/>
+                <field name="area"/>
+                <field name="row_count"/>
+                <field name="tree_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_agriculture_plot" model="ir.actions.act_window">
+        <field name="name">Sahələr</field>
+        <field name="res_model">agriculture.plot</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Yeni bir təsərrüfat sahəsi yaradın.
+            </p>
+        </field>
+    </record>
+</odoo>

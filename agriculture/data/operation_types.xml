@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Əsas Əməliyyat Növləri -->
+        <record id="operation_type_fertilization" model="agriculture.operation.type">
+            <field name="name">Gübrələmə</field>
+            <field name="category">nutrition</field>
+        </record>
+
+        <record id="operation_type_watering" model="agriculture.operation.type">
+            <field name="name">Suvarma</field>
+            <field name="category">irrigation</field>
+        </record>
+
+        <record id="operation_type_spraying" model="agriculture.operation.type">
+            <field name="name">Dərmanlanma</field>
+            <field name="category">treatment</field>
+        </record>
+
+        <record id="operation_type_pruning" model="agriculture.operation.type">
+            <field name="name">Budama</field>
+            <field name="category">maintenance</field>
+        </record>
+
+        <record id="operation_type_harvest" model="agriculture.operation.type">
+            <field name="name">Məhsul Yığımı</field>
+            <field name="category">harvesting</field>
+        </record>
+
+        <record id="operation_type_planting" model="agriculture.operation.type">
+            <field name="name">Əkmə</field>
+            <field name="category">planting</field>
+        </record>
+
+        <record id="operation_type_weeding" model="agriculture.operation.type">
+            <field name="name">Alaq Otlarının Təmizlənməsi</field>
+            <field name="category">maintenance</field>
+        </record>
+
+        <record id="operation_type_pest_control" model="agriculture.operation.type">
+            <field name="name">Zərərverici İlə Mübarizə</field>
+            <field name="category">treatment</field>
+        </record>
+    </data>
+</odoo>

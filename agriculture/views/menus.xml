@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_agriculture_root"
+        name="Kənd Təsərrüfatı"
+        web_icon="agriculture,static/description/icon.png"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_agriculture_master_data"
+        name="Əsas Məlumatlar"
+        parent="menu_agriculture_root"
+        sequence="1"/>
+
+    <menuitem
+        id="menu_agriculture_plot"
+        name="Sahələr"
+        parent="menu_agriculture_master_data"
+        action="action_agriculture_plot"
+        sequence="10"/>
+
+    <record id="action_agriculture_row" model="ir.actions.act_window">
+        <field name="name">Cərgələr</field>
+        <field name="res_model">agriculture.row</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem
+        id="menu_agriculture_row"
+        name="Cərgələr"
+        parent="menu_agriculture_master_data"
+        action="action_agriculture_row"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_bulk_row_creator"
+        name="Toplu Cərgə Yaratma"
+        parent="menu_agriculture_master_data"
+        action="action_bulk_row_creator"
+        sequence="25"/>
+
+    <record id="action_agriculture_list" model="ir.actions.act_window">
+        <field name="name">Ağaclar</field>
+        <field name="res_model">agriculture.tree</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem
+        id="menu_agriculture_list"
+        name="Ağaclar"
+        parent="menu_agriculture_master_data"
+        action="action_agriculture_list"
+        sequence="30"/>
+
+    <!-- Əməliyyatlar Menyusu -->
+    <menuitem
+        id="menu_agriculture_operations"
+        name="Əməliyyatlar"
+        parent="menu_agriculture_root"
+        sequence="2"/>
+
+    <menuitem
+        id="menu_agriculture_operation"
+        name="Əməliyyatlar"
+        parent="menu_agriculture_operations"
+        action="action_agriculture_operation"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_agriculture_operation_type"
+        name="Əməliyyat Növləri"
+        parent="menu_agriculture_operations"
+        action="action_agriculture_operation_type"
+        sequence="20"/>
+
+    <data noupdate="1">
+        <record id="seq_agriculture_list" model="ir.sequence">
+            <field name="name">Ağac Kodu</field>
+            <field name="code">agriculture.tree</field>
+            <field name="prefix">AĞAC-</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>

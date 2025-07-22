@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_agriculture_operation_type_list" model="ir.ui.view">
+        <field name="name">agriculture.operation.type.list</field>
+        <field name="model">agriculture.operation.type</field>
+        <field name="arch" type="xml">
+            <list string="Əməliyyat Növləri">
+                <field name="name"/>
+                <field name="category"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_agriculture_operation_type_form" model="ir.ui.view">
+        <field name="name">agriculture.operation.type.form</field>
+        <field name="model">agriculture.operation.type</field>
+        <field name="arch" type="xml">
+            <form string="Əməliyyat Növü">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="category"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_agriculture_operation_type" model="ir.actions.act_window">
+        <field name="name">Əməliyyat Növləri</field>
+        <field name="res_model">agriculture.operation.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    
+    <record id="view_agriculture_operation_search" model="ir.ui.view">
+        <field name="name">agriculture.operation.search</field>
+        <field name="model">agriculture.operation</field>
+        <field name="arch" type="xml">
+            <search string="Əməliyyatları Axtar">
+                <field name="name" string="Əməliyyat"/>
+                <field name="operation_type_id" string="Əməliyyat Növü"/>
+                <field name="plot_id" string="Sahə"/>
+                <field name="date" string="Tarix"/>
+                <separator/>
+                <filter string="Bu Ay" name="filter_this_month" 
+                        domain="[('date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')), ('date', '&lt;=', ((context_today().replace(day=1) + relativedelta(months=1) - relativedelta(days=1)).strftime('%Y-%m-%d')))]"/>
+                <filter string="Bu Həftə" name="filter_this_week" 
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(days=context_today().weekday())).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Bugün" name="filter_today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Qaralama" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="İcra Edilmiş" name="filter_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Ləğv Edilmiş" name="filter_cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Gübrələmə" name="filter_nutrition" domain="[('operation_type_id.category', '=', 'nutrition')]"/>
+                <filter string="Suvarma" name="filter_irrigation" domain="[('operation_type_id.category', '=', 'irrigation')]"/>
+                <filter string="Dərmanlanma" name="filter_treatment" domain="[('operation_type_id.category', '=', 'treatment')]"/>
+                <separator/>
+                <group expand="1" string="Görə Qruplaşdır">
+                    <filter string="Əməliyyat Növünə Görə" name="group_by_operation_type" context="{'group_by':'operation_type_id'}"/>
+                    <filter string="Sahəyə Görə" name="group_by_plot" context="{'group_by':'plot_id'}"/>
+                    <filter string="Tarixə Görə" name="group_by_date" context="{'group_by':'date'}"/>
+                    <filter string="Statusu Görə" name="group_by_state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_agriculture_operation_list" model="ir.ui.view">
+        <field name="name">agriculture.operation.list</field>
+        <field name="model">agriculture.operation</field>
+        <field name="arch" type="xml">
+            <list string="Əməliyyatlar" create="true" edit="true" delete="true">
+                <field name="name"/>
+                <field name="operation_type_id"/>
+                <field name="date"/>
+                <field name="plot_id"/>
+                <field name="total_cost" sum="Ümumi Xərc"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_agriculture_operation_form" model="ir.ui.view">
+        <field name="name">agriculture.operation.form</field>
+        <field name="model">agriculture.operation</field>
+        <field name="arch" type="xml">
+            <form string="Əməliyyat">
+                <header>
+                    <button name="action_done" string="Tamamla" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_create_purchase_order" string="Sifariş Yarat" type="object" class="btn-secondary" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Ləğv Et" type="object" confirm="Bu əməliyyatı ləğv etmək istədiyinizdən əminsiniz?" invisible="state not in ['draft']"/>
+                    <button name="action_draft" string="Qaralama" type="object" invisible="state not in ['done', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                           <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="operation_type_id" options="{'no_create_edit': True}"/>
+                            <field name="date"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <label for="plot_id" string="Hədəf"/>
+                            <div class="o_row">
+                                <field name="plot_id" placeholder="Sahəni seçin..." options="{'no_create_edit': True}"/>
+                                <field name="row_ids" widget="many2many_tags" placeholder="Cərgələri seçin..." invisible="not plot_id" options="{'no_create_edit': True}"/>
+                            </div>
+                            <field name="total_trees" readonly="1" invisible="not row_ids"/>
+                            <field name="fertilizer_per_tree" readonly="1" invisible="not row_ids" string="Ağac Başına Gübrə (kg)"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Məhsul Xərcləri" name="product_costs">
+                            <field name="product_line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id" domain="[('type', '=', 'consu')]" options="{'no_create_edit': True}"/>
+                                    <field name="available_qty" readonly="1" string="Anbardan Mövcud"/>
+                                    <field name="product_qty"/>
+                                    <field name="product_uom_id" readonly="1"/>
+                                    <field name="unit_cost" readonly="1"/>
+                                    <field name="cost" sum="Cəmi Xərc" readonly="1"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_cost"/>
+                            </group>
+                        </page>
+                        <page string="Qeydlər">
+                            <field name="notes" placeholder="Əməliyyat haqqında əlavə məlumatlar..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_agriculture_operation" model="ir.actions.act_window">
+        <field name="name">Əməliyyatlar</field>
+        <field name="res_model">agriculture.operation</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Yeni bir kənd təsərrüfatı əməliyyatı yaradın.
+            </p>
+        </field>
+    </record>
+</odoo>

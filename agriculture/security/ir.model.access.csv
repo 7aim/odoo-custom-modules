@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_agriculture_plot,access.agriculture.plot,model_agriculture_plot,base.group_user,1,1,1,1
+access_agriculture_row,access.agriculture.row,model_agriculture_row,base.group_user,1,1,1,1
+access_agriculture_tree,access.agriculture.tree,model_agriculture_tree,base.group_user,1,1,1,1
+access_agriculture_operation_type,access.agriculture.operation.type,model_agriculture_operation_type,base.group_user,1,1,1,1
+access_agriculture_operation,access.agriculture.operation,model_agriculture_operation,base.group_user,1,1,1,1
+access_agriculture_operation_line,access.agriculture.operation.line,model_agriculture_operation_line,base.group_user,1,1,1,1
