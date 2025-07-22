@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
 class BulkRowCreator(models.TransientModel):
@@ -8,6 +7,7 @@ class BulkRowCreator(models.TransientModel):
     plot_id = fields.Many2one('agriculture.plot', string="Sahə", required=True)
     row_count = fields.Integer(string="Cərgə Sayı", required=True, default=10)
     trees_per_row = fields.Integer(string="Hər Cərgədə Ağac Sayı", required=True, default=20)
+    total_trees = fields.Integer(string="Ümumi Ağac Sayı", compute="_compute_total_trees", store=False)
     
     # Cərgə adlandırma
     row_prefix = fields.Char(string="Cərgə Prefiksi", help="Məs: 'A' -> A1, A2, A3...")
@@ -16,6 +16,11 @@ class BulkRowCreator(models.TransientModel):
     # Ağac məlumatları
     tree_variety = fields.Char(string="Ağac Növü", default="Qızıləhmədi")
     plant_date = fields.Date(string="Əkilmə Tarixi", default=fields.Date.context_today)
+
+    @api.depends('row_count', 'trees_per_row')
+    def _compute_total_trees(self):
+        for record in self:
+            record.total_trees = record.row_count * record.trees_per_row
 
     @api.onchange('plot_id')
     def _onchange_plot_id(self):
@@ -64,31 +69,5 @@ class BulkRowCreator(models.TransientModel):
                 'title': 'Uğur!',
                 'message': f'{len(created_rows)} cərgə və {len(created_rows) * self.trees_per_row} ağac yaradıldı.',
                 'type': 'success',
-            }
-        }
-
-    def action_preview(self):
-        """Yaradılacaq cərgələrin preview-nu göstər"""
-        preview_list = []
-        
-        for i in range(1, min(self.row_count + 1, 6)):  # İlk 5-ni göstər
-            if self.use_plot_code and self.row_prefix:
-                row_name = f"{self.row_prefix}{i}"
-            else:
-                row_name = f"Cərgə {i}"
-            preview_list.append(row_name)
-        
-        if self.row_count > 5:
-            preview_list.append("...")
-        
-        preview_text = ", ".join(preview_list)
-        
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Preview',
-                'message': f'Yaradılacaq cərgələr: {preview_text}\\nHər cərgədə {self.trees_per_row} ağac olacaq.',
-                'type': 'info',
             }
         }

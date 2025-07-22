@@ -13,11 +13,12 @@
     'author': "Sizin Adınız",
     'website': "https://www.sizinvebsayt.com",
     'category': 'Industries',
-    'version': '18.0.1.0.6',
+    'version': '18.0.1.1.0',
     'depends': ['base', 'stock', 'purchase'],  
     'data': [
         'security/ir.model.access.csv',
         'data/operation_types.xml',
+        'wizard/bulk_row_creator_views.xml',
         'views/agriculture_plot_views.xml',
         'views/agriculture_row_views.xml',
         'views/agriculture_tree_views.xml',

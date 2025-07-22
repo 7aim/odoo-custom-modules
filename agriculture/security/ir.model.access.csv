@@ -5,3 +5,4 @@ access_agriculture_tree,access.agriculture.tree,model_agriculture_tree,base.grou
 access_agriculture_operation_type,access.agriculture.operation.type,model_agriculture_operation_type,base.group_user,1,1,1,1
 access_agriculture_operation,access.agriculture.operation,model_agriculture_operation,base.group_user,1,1,1,1
 access_agriculture_operation_line,access.agriculture.operation.line,model_agriculture_operation_line,base.group_user,1,1,1,1
+access_agriculture_bulk_row_creator,access.agriculture.bulk.row.creator,model_agriculture_bulk_row_creator,base.group_user,1,1,1,1

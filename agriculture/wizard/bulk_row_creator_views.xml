@@ -27,16 +27,12 @@
                         <field name="row_count" readonly="1"/> cərgə × 
                         <field name="trees_per_row" readonly="1"/> ağac = 
                         <span style="color: #28a745; font-weight: bold;">
-                            <field name="row_count" readonly="1" invisible="1"/>
-                            <field name="trees_per_row" readonly="1" invisible="1"/>
-                            <span style="color: #28a745; font-weight: bold;" 
-                                  t-esc="record.row_count.raw_value * record.trees_per_row.raw_value"/>
+                            <field name="total_trees" readonly="1"/>
                         </span> ağac yaradılacaq
                     </div>
                 </sheet>
                 <footer>
-                    <button string="Preview" name="action_preview" type="object" class="btn-secondary"/>
-                    <button string="Yarad" name="action_create_rows" type="object" class="oe_highlight"/>
+                    <button string="Yarat" name="action_create_rows" type="object" class="oe_highlight"/>
                     <button string="Ləğv Et" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

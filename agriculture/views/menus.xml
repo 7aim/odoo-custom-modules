@@ -31,13 +31,6 @@
         action="action_agriculture_row"
         sequence="20"/>
 
-    <menuitem
-        id="menu_bulk_row_creator"
-        name="Toplu Cərgə Yaratma"
-        parent="menu_agriculture_master_data"
-        action="action_bulk_row_creator"
-        sequence="25"/>
-
     <record id="action_agriculture_list" model="ir.actions.act_window">
         <field name="name">Ağaclar</field>
         <field name="res_model">agriculture.tree</field>
@@ -49,6 +42,13 @@
         parent="menu_agriculture_master_data"
         action="action_agriculture_list"
         sequence="30"/>
+
+    <menuitem
+        id="menu_bulk_row_creator"
+        name="Toplu Cərgə Yaratma"
+        parent="menu_agriculture_master_data"
+        action="action_bulk_row_creator"
+        sequence="35"/>
 
     <!-- Əməliyyatlar Menyusu -->
     <menuitem
