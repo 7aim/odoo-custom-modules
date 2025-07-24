@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- İşçi Hesabatları Dashboard -->
+    <record id="view_agriculture_worker_dashboard" model="ir.ui.view">
+        <field name="name">agriculture.worker.dashboard</field>
+        <field name="model">agriculture.worker</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard" create="false">
+                <field name="name"/>
+                <field name="total_operations"/>
+                <field name="total_earnings"/>
+                <field name="total_payments"/>
+                <field name="balance"/>
+                <field name="daily_wage"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong><t t-esc="record.name.value"/></strong>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <span class="badge badge-pill badge-success" t-if="record.state.raw_value == 'active'">Aktiv</span>
+                                    <span class="badge badge-pill badge-warning" t-if="record.state.raw_value == 'inactive'">Qeyri-aktiv</span>
+                                    <span class="badge badge-pill badge-danger" t-if="record.state.raw_value == 'terminated'">İşdən çıxarılmış</span>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="d-flex">
+                                                <div class="mr-auto">
+                                                    <span class="text-muted">Əməliyyatlar:</span>
+                                                </div>
+                                                <div>
+                                                    <strong><t t-esc="record.total_operations.value"/></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="d-flex">
+                                                <div class="mr-auto">
+                                                    <span class="text-muted">Günlük maaş:</span>
+                                                </div>
+                                                <div>
+                                                    <strong><t t-esc="record.daily_wage.value"/> AZN</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <div class="d-flex">
+                                                <div class="mr-auto">
+                                                    <span class="text-muted">Ödənilmiş:</span>
+                                                </div>
+                                                <div>
+                                                    <strong class="text-info"><t t-esc="record.total_payments.value"/> AZN</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="d-flex">
+                                                <div class="mr-auto">
+                                                    <span class="text-muted">Balans:</span>
+                                                </div>
+                                                <div>
+                                                    <strong class="text-danger" t-if="record.balance.value > 0"><t t-esc="record.balance.value"/> AZN</strong>
+                                                    <strong class="text-success" t-if="record.balance.value &lt;= 0"><t t-esc="record.balance.value"/> AZN</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <div class="d-flex">
+                                                <div class="mr-auto">
+                                                    <span class="text-muted">Ümumi qazanc:</span>
+                                                </div>
+                                                <div>
+                                                    <strong class="text-success"><t t-esc="record.total_earnings.value"/> AZN</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Dashboard Action -->
+    <record id="action_agriculture_worker_dashboard" model="ir.actions.act_window">
+        <field name="name">İşçi Hesabatları</field>
+        <field name="res_model">agriculture.worker</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_id" ref="view_agriculture_worker_dashboard"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                İşçi hesabatlarını görmək üçün işçi əlavə edin.
+            </p>
+        </field>
+    </record>
+</odoo>

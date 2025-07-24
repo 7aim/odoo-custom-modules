@@ -6,3 +6,5 @@ access_agriculture_operation_type,access.agriculture.operation.type,model_agricu
 access_agriculture_operation,access.agriculture.operation,model_agriculture_operation,base.group_user,1,1,1,1
 access_agriculture_operation_line,access.agriculture.operation.line,model_agriculture_operation_line,base.group_user,1,1,1,1
 access_agriculture_bulk_row_creator,access.agriculture.bulk.row.creator,model_agriculture_bulk_row_creator,base.group_user,1,1,1,1
+access_agriculture_worker,access.agriculture.worker,model_agriculture_worker,base.group_user,1,1,1,1
+access_agriculture_worker_payment,access.agriculture.worker.payment,model_agriculture_worker_payment,base.group_user,1,1,1,1

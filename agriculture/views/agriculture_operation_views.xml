@@ -75,6 +75,9 @@
                 <field name="operation_type_id"/>
                 <field name="date"/>
                 <field name="plot_id"/>
+                <field name="total_trees" string="Ağac"/>
+                <field name="water_amount" string="Su (L)" optional="hide"/>
+                <field name="harvest_weight" string="Məhsul (kq)" optional="hide"/>
                 <field name="total_cost" sum="Ümumi Xərc"/>
                 <field name="state" widget="badge" decoration-success="state == 'done'" decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'"/>
             </list>
@@ -112,14 +115,57 @@
                                 <field name="row_ids" widget="many2many_tags" placeholder="Cərgələri seçin..." invisible="not plot_id" options="{'no_create_edit': True}"/>
                             </div>
                             <field name="total_trees" readonly="1" invisible="not row_ids"/>
-                            <field name="fertilizer_per_tree" readonly="1" invisible="not row_ids" string="Ağac Başına Gübrə (kg)"/>
                         </group>
                     </group>
+
+                    <!-- GÜBRƏLƏMƏ əməliyyatları üçün xüsusi sahələr -->
+                    <group string="Gübrələmə Məlumatları" invisible="operation_category != 'nutrition'">
+                        <group>
+                            <field name="operation_category" invisible="1"/>
+                            <field name="fertilizer_per_tree" readonly="1" string="Ağac Başına Gübrə (kg)" invisible="not row_ids"/>
+                        </group>
+                    </group>
+
+                    <!-- SUVARMA əməliyyatları üçün xüsusi sahələr -->
+                    <group string="Suvarma Məlumatları" invisible="operation_category != 'irrigation'">
+                        <group>
+                            <field name="water_amount"/>
+                            <field name="irrigation_duration"/>
+                        </group>
+                        <group>
+                            <field name="irrigation_method"/>
+                        </group>
+                    </group>
+
+                    <!-- MÜALİCƏ əməliyyatları üçün xüsusi sahələr -->
+                    <group string="Müalicə Məlumatları" invisible="operation_category != 'treatment'">
+                        <group>
+                            <field name="treatment_target"/>
+                            <field name="dosage_per_tree"/>
+                        </group>
+                    </group>
+
+                    <!-- MƏHSUL YIĞIMI üçün xüsusi sahələr -->
+                    <group string="Məhsul Yığımı Məlumatları" invisible="operation_category != 'harvesting'">
+                        <group>
+                            <field name="harvest_weight"/>
+                            <field name="harvest_quality"/>
+                        </group>
+                    </group>
+
+                    <!-- ƏKMƏ/TİKİNTİ üçün xüsusi sahələr -->
+                    <group string="Əkmə Məlumatları" invisible="operation_category != 'planting'">
+                        <group>
+                            <field name="planted_variety"/>
+                            <field name="planting_density"/>
+                        </group>
+                    </group>
+
                     <notebook>
                         <page string="Məhsul Xərcləri" name="product_costs">
                             <field name="product_line_ids">
                                 <list editable="bottom">
-                                    <field name="product_id" domain="[('type', '=', 'consu')]" options="{'no_create_edit': True}"/>
+                                    <field name="product_id" options="{'no_create_edit': True}"/>
                                     <field name="available_qty" readonly="1" string="Anbardan Mövcud"/>
                                     <field name="product_qty"/>
                                     <field name="product_uom_id" readonly="1"/>
@@ -129,6 +175,12 @@
                             </field>
                             <group class="oe_subtotal_footer oe_right">
                                 <field name="total_cost"/>
+                            </group>
+                        </page>
+                        <page string="İşçilər" name="workers">
+                            <group>
+                                <field name="worker_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                                <field name="worker_cost" readonly="1"/>
                             </group>
                         </page>
                         <page string="Qeydlər">

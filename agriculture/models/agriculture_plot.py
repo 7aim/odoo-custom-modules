@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+# Sahə
 class AgriculturePlot(models.Model):
     _name = 'agriculture.plot'
     _description = 'Təsərrüfat Sahəsi'

@@ -50,12 +50,40 @@
         action="action_bulk_row_creator"
         sequence="35"/>
 
+    <!-- İşçilər Menyusu -->
+    <menuitem
+        id="menu_agriculture_workers"
+        name="İşçilər"
+        parent="menu_agriculture_root"
+        sequence="3"/>
+
+    <menuitem
+        id="menu_agriculture_worker"
+        name="İşçilər"
+        parent="menu_agriculture_workers"
+        action="action_agriculture_worker"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_agriculture_worker_payment"
+        name="İşçi Ödənişləri"
+        parent="menu_agriculture_workers"
+        action="action_agriculture_worker_payment"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_agriculture_worker_dashboard"
+        name="İşçi Hesabatları"
+        parent="menu_agriculture_workers"
+        action="action_agriculture_worker_dashboard"
+        sequence="30"/>
+
     <!-- Əməliyyatlar Menyusu -->
     <menuitem
         id="menu_agriculture_operations"
         name="Əməliyyatlar"
         parent="menu_agriculture_root"
-        sequence="2"/>
+        sequence="4"/>
 
     <menuitem
         id="menu_agriculture_operation"
@@ -69,6 +97,27 @@
         name="Əməliyyat Növləri"
         parent="menu_agriculture_operations"
         action="action_agriculture_operation_type"
+        sequence="20"/>
+
+    <!-- Hesabatlar Menyusu -->
+    <menuitem
+        id="menu_agriculture_reports"
+        name="Hesabatlar"
+        parent="menu_agriculture_root"
+        sequence="5"/>
+
+    <menuitem
+        id="menu_agriculture_operation_pivot"
+        name="Əməliyyat Hesabatı"
+        parent="menu_agriculture_reports"
+        action="action_agriculture_operation_pivot"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_agriculture_worker_payment_pivot"
+        name="İşçi Ödəniş Hesabatı"
+        parent="menu_agriculture_reports"
+        action="action_agriculture_worker_payment_pivot"
         sequence="20"/>
 
     <data noupdate="1">

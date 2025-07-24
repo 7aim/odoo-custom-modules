@@ -28,6 +28,15 @@ class AgricultureOperation(models.Model):
 
     name = fields.Char(string="Əməliyyat", compute='_compute_name', store=True)
     operation_type_id = fields.Many2one('agriculture.operation.type', string="Əməliyyat Növü", required=True)
+    operation_category = fields.Selection([
+        ('nutrition', 'Qidalandırma'),
+        ('irrigation', 'Suvarma'),
+        ('treatment', 'Müalicə'),
+        ('maintenance', 'Baxım'),
+        ('harvesting', 'Məhsul Yığımı'),
+        ('planting', 'Əkmə'),
+        ('other', 'Digər')
+    ], string="Əməliyyat Kateqoriyası", related='operation_type_id.category', store=True)
     date = fields.Datetime(string="Tarix və Vaxt", required=True, default=fields.Datetime.now)
     state = fields.Selection([
         ('draft', 'Qaralama'),
@@ -37,11 +46,48 @@ class AgricultureOperation(models.Model):
 
     plot_id = fields.Many2one('agriculture.plot', string="Sahə")
     row_ids = fields.Many2many('agriculture.row', string="Cərgələr", domain="[('plot_id', '=', plot_id)]")
-    tree_ids = fields.Many2many('agriculture.tree', string="Ağaclar", domain="[('plot_id', '=', plot_id)]")
+    
+    # İşçi məlumatları
+    worker_ids = fields.Many2many('agriculture.worker', string="İşçilər")
+    worker_cost = fields.Monetary(string="İşçi Xərcləri", compute='_compute_worker_cost', store=True, currency_field='currency_id')
     
     # Ağac sayı və ağac başına hesablamalar
     total_trees = fields.Integer(string="Ümumi Ağac Sayı", compute='_compute_tree_stats', store=True)
     fertilizer_per_tree = fields.Float(string="Ağac Başına Gübrə (kg)", compute='_compute_tree_stats', store=True)
+
+    # Suvarma əməliyyatları üçün
+    water_amount = fields.Float(string="Su Miqdarı (L)", help="Suvarmada istifadə edilən su miqdarı")
+    irrigation_duration = fields.Float(string="Suvarma Müddəti (saat)", help="Suvarma əməliyyatının müddəti")
+    irrigation_method = fields.Selection([
+        ('drip', 'Damcı Suvarma'),
+        ('sprinkler', 'Çiləyici'),
+        ('flood', 'Daşqın Suvarma'),
+        ('manual', 'Əl ilə'),
+        ('other', 'Digər')
+    ], string="Suvarma Metodu")
+
+    # Müalicə əməliyyatları üçün
+    treatment_target = fields.Selection([
+        ('pest', 'Zərərverici'),
+        ('disease', 'Xəstəlik'),
+        ('weed', 'Alaq otu'),
+        ('nutrition', 'Qida çatışmazlığı'),
+        ('other', 'Digər')
+    ], string="Müalicə Hədəfi")
+    dosage_per_tree = fields.Float(string="Ağac Başına Dozaj (ml/qr)", help="Hər ağac üçün tətbiq edilən dozaj")
+
+    # Məhsul yığımı üçün
+    harvest_weight = fields.Float(string="Yığılmış Məhsul Çəkisi (kq)", help="Yığılmış məhsulun ümumi çəkisi")
+    harvest_quality = fields.Selection([
+        ('excellent', 'Əla'),
+        ('good', 'Yaxşı'),
+        ('average', 'Orta'),
+        ('poor', 'Zəif')
+    ], string="Məhsul Keyfiyyəti")
+
+    # Əkmə/tikinti üçün
+    planted_variety = fields.Char(string="Əkilən Növ", help="Əkilən bitki və ya ağac növü")
+    planting_density = fields.Float(string="Əkmə Sıxlığı", help="Hər sahə vahidi üçün bitki sayı")
 
     notes = fields.Text(string="Qeydlər")
 
@@ -64,6 +110,19 @@ class AgricultureOperation(models.Model):
             else:
                 operation.fertilizer_per_tree = 0.0
 
+    @api.depends('worker_ids', 'worker_ids.daily_wage')
+    def _compute_worker_cost(self):
+        """İşçi xərclərini hesabla"""
+        for operation in self:
+            operation.worker_cost = sum(worker.daily_wage for worker in operation.worker_ids)
+
+    @api.onchange('operation_type_id')
+    def _onchange_operation_type_id(self):
+        """Əməliyyat növü dəyişəndə məhsul xətlərini təmizlə və məhsul domain-ni yenilə"""
+        if self.operation_type_id:
+            # Mövcud məhsul xətlərini təmizlə
+            self.product_line_ids = [(5, 0, 0)]
+
 
     product_line_ids = fields.One2many('agriculture.operation.line', 'operation_id', string="Məhsul Xərcləri")
     total_cost = fields.Monetary(string="Ümumi Xərc", compute='_compute_total_cost', store=True, currency_field='currency_id')
@@ -78,10 +137,11 @@ class AgricultureOperation(models.Model):
             else:
                 rec.name = "Yeni Əməliyyat"
     
-    @api.depends('product_line_ids.cost')
+    @api.depends('product_line_ids.cost', 'worker_cost')
     def _compute_total_cost(self):
         for operation in self:
-            operation.total_cost = sum(line.cost for line in operation.product_line_ids)
+            product_cost = sum(line.cost for line in operation.product_line_ids)
+            operation.total_cost = product_cost + operation.worker_cost
 
     def action_done(self):
         """Əməliyyatı tamamla və məhsul miqdarlarını azalt"""
@@ -134,35 +194,6 @@ class AgricultureOperation(models.Model):
     def action_cancel(self):
         """Əməliyyatı ləğv et"""
         self.write({'state': 'cancelled'})
-        
-    def _increase_product_qty(self, product, qty):
-        """Məhsul miqdarını artır - sadə metod"""
-        try:
-            # İlk internal location tapırıq
-            location = self.env['stock.location'].search([
-                ('usage', '=', 'internal')
-            ], limit=1)
-            
-            if location:
-                # Quant tap və ya yarat
-                quant = self.env['stock.quant'].search([
-                    ('product_id', '=', product.id),
-                    ('location_id', '=', location.id)
-                ], limit=1)
-                
-                if quant:
-                    quant.quantity += qty
-                else:
-                    self.env['stock.quant'].create({
-                        'product_id': product.id,
-                        'location_id': location.id,
-                        'quantity': qty,
-                    })
-                    
-        except Exception as e:
-            import logging
-            _logger = logging.getLogger(__name__)
-            _logger.error(f"Product quantity increase error: {str(e)}")
         
     def action_draft(self):
         """Əməliyyatı qaralama vəziyyətinə qaytar"""
@@ -238,8 +269,7 @@ class AgricultureOperationLine(models.Model):
     _description = 'Kənd Təsərrüfatı Əməliyyatı Məhsul Sətiri'
 
     operation_id = fields.Many2one('agriculture.operation', string="Əməliyyat", ondelete='cascade', required=True)
-    product_id = fields.Many2one('product.product', string="Məhsul (Gübrə/Dərman)", required=True,
-                                 domain="[('type', '=', 'consu')]")
+    product_id = fields.Many2one('product.product', string="Məhsul", required=True, domain="[('type', '=', 'consu')]")
     product_qty = fields.Float(string="Miqdar", required=True, default=1.0)
     product_uom_id = fields.Many2one('uom.uom', string="Ölçü Vahidi", related='product_id.uom_id')
     available_qty = fields.Float(string="Anbardan Mövcud", compute='_compute_available_qty', store=False, readonly=True)

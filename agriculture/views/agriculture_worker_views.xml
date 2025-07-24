@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- İşçi List View -->
+    <record id="view_agriculture_worker_list" model="ir.ui.view">
+        <field name="name">agriculture.worker.list</field>
+        <field name="model">agriculture.worker</field>
+        <field name="arch" type="xml">
+            <list string="İşçilər">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="daily_wage"/>
+                <field name="total_operations"/>
+                <field name="total_earnings"/>
+                <field name="total_payments"/>
+                <field name="balance"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-muted="state == 'terminated'" decoration-warning="state == 'inactive'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- İşçi Form View -->
+    <record id="view_agriculture_worker_form" model="ir.ui.view">
+        <field name="name">agriculture.worker.form</field>
+        <field name="model">agriculture.worker</field>
+        <field name="arch" type="xml">
+            <form string="İşçi">
+                <header>
+                    <button name="action_view_operations" string="Əməliyyatlar" type="object" class="btn-primary"/>
+                    <button name="action_view_payments" string="Ödənişlər" type="object" class="btn-secondary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="active,inactive,terminated"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="İşçi adı..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="daily_wage"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Statistika">
+                        <group>
+                            <field name="total_operations" readonly="1"/>
+                            <field name="total_earnings" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="total_payments" readonly="1"/>
+                            <field name="balance" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Qeydlər">
+                            <field name="notes" placeholder="İşçi haqqında əlavə məlumatlar..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- İşçi Action -->
+    <record id="action_agriculture_worker" model="ir.actions.act_window">
+        <field name="name">İşçilər</field>
+        <field name="res_model">agriculture.worker</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Yeni bir işçi əlavə edin.
+            </p>
+        </field>
+    </record>
+
+    <!-- İşçi Ödəniş List View -->
+    <record id="view_agriculture_worker_payment_list" model="ir.ui.view">
+        <field name="name">agriculture.worker.payment.list</field>
+        <field name="model">agriculture.worker.payment</field>
+        <field name="arch" type="xml">
+            <list string="İşçi Ödənişləri">
+                <field name="name"/>
+                <field name="worker_id"/>
+                <field name="date"/>
+                <field name="amount" sum="Ümumi Ödəniş"/>
+                <field name="payment_type"/>
+                <field name="state" widget="badge" decoration-success="state == 'paid'" decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- İşçi Ödəniş Form View -->
+    <record id="view_agriculture_worker_payment_form" model="ir.ui.view">
+        <field name="name">agriculture.worker.payment.form</field>
+        <field name="model">agriculture.worker.payment</field>
+        <field name="arch" type="xml">
+            <form string="İşçi Ödənişi">
+                <header>
+                    <button name="action_confirm_payment" string="Təsdiqlə" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_cancel_payment" string="Ləğv Et" type="object" confirm="Bu ödənişi ləğv etmək istədiyinizdən əminsiniz?" invisible="state not in ['draft', 'paid']"/>
+                    <button name="action_draft_payment" string="Qaralama" type="object" invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="worker_id" options="{'no_create_edit': True}"/>
+                            <field name="date"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                            <field name="payment_type"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Açıqlama">
+                            <field name="description" placeholder="Ödəniş haqqında əlavə məlumatlar..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- İşçi Ödəniş Action -->
+    <record id="action_agriculture_worker_payment" model="ir.actions.act_window">
+        <field name="name">İşçi Ödənişləri</field>
+        <field name="res_model">agriculture.worker.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Yeni bir işçi ödənişi əlavə edin.
+            </p>
+        </field>
+    </record>
+</odoo>

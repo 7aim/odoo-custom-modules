@@ -13,7 +13,7 @@
     'author': "Sizin Adınız",
     'website': "https://www.sizinvebsayt.com",
     'category': 'Industries',
-    'version': '18.0.1.1.0',
+    'version': '18.0.2.0.0',
     'depends': ['base', 'stock', 'purchase'],  
     'data': [
         'security/ir.model.access.csv',
@@ -23,6 +23,9 @@
         'views/agriculture_row_views.xml',
         'views/agriculture_tree_views.xml',
         'views/agriculture_operation_views.xml',
+        'views/agriculture_worker_views.xml',
+        'views/agriculture_worker_dashboard.xml',
+        'views/agriculture_pivot_views.xml',
         'views/menus.xml',
     ],
     'installable': True,

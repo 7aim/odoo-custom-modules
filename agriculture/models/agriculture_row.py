@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+# Cərgə
 class AgricultureRow(models.Model):
     _name = 'agriculture.row'
     _description = 'Sahədəki Cərgə'

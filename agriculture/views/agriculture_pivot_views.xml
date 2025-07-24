@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Əməliyyat Pivot View -->
+    <record id="view_agriculture_operation_pivot" model="ir.ui.view">
+        <field name="name">agriculture.operation.pivot</field>
+        <field name="model">agriculture.operation</field>
+        <field name="arch" type="xml">
+            <pivot string="Əməliyyat Hesabatı">
+                <field name="date" type="row" interval="month"/>
+                <field name="operation_type_id" type="row"/>
+                <field name="plot_id" type="col"/>
+                <field name="total_cost" type="measure"/>
+                <field name="worker_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- İşçi Ödəniş Pivot View -->
+    <record id="view_agriculture_worker_payment_pivot" model="ir.ui.view">
+        <field name="name">agriculture.worker.payment.pivot</field>
+        <field name="model">agriculture.worker.payment</field>
+        <field name="arch" type="xml">
+            <pivot string="İşçi Ödəniş Hesabatı">
+                <field name="date" type="row" interval="month"/>
+                <field name="worker_id" type="row"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Əməliyyat Pivot Action -->
+    <record id="action_agriculture_operation_pivot" model="ir.actions.act_window">
+        <field name="name">Əməliyyat Hesabatı</field>
+        <field name="res_model">agriculture.operation</field>
+        <field name="view_mode">pivot,tree,form</field>
+        <field name="view_id" ref="view_agriculture_operation_pivot"/>
+        <field name="context">{
+            'search_default_group_by_plot': 1,
+            'search_default_group_by_type': 1,
+        }</field>
+    </record>
+
+    <!-- İşçi Ödəniş Pivot Action -->
+    <record id="action_agriculture_worker_payment_pivot" model="ir.actions.act_window">
+        <field name="name">İşçi Ödəniş Hesabatı</field>
+        <field name="res_model">agriculture.worker.payment</field>
+        <field name="view_mode">pivot,tree,form</field>
+        <field name="view_id" ref="view_agriculture_worker_payment_pivot"/>
+        <field name="context">{
+            'search_default_group_by_worker': 1,
+        }</field>
+    </record>
+</odoo>

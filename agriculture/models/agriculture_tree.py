@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+# Ağac
 class AgricultureTree(models.Model):
     _name = 'agriculture.tree'
     _description = 'Təsərrüfat Ağacı'
@@ -17,6 +18,7 @@ class AgricultureTree(models.Model):
         ('removed', 'Çıxarılıb')
     ], string="Vəziyyəti", default='young')
 
+    # Ağac nömrəsi
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
